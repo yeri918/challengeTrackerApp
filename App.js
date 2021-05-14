@@ -1,21 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  Image,
+  SafeAreaView,
+} from "react-native";
+import CalendarScreen from "./app/screens/CalendarScreen";
+import WelcomeScreen from "./app/screens/WelcomeScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+//Returns the Calendar screen
+function Calendar() {
+  return <CalendarScreen></CalendarScreen>;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+//Returns the Login screen
+function Login() {
+  return <WelcomeScreen></WelcomeScreen>;
+}
+
+const Stack = createStackNavigator();
+
+export default function App() {
+  console.log("App executed");
+
+  // const handlePressed = () => console.log("Text Pressed");
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Welcome!">
+        <Stack.Screen name="Welcome!" component={Login} />
+        <Stack.Screen name="Calendar" component={Calendar} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
