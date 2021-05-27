@@ -1,26 +1,42 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { ImageBackground, StyleSheet } from "react-native";
-import { Calendar, CalendarList } from "react-native-calendars";
+import { ImageBackground, StyleSheet, View, Text } from "react-native";
+import CalendarComponent from "../../components/calendar";
+import TaskScreen from "../../components/TaskComponent";
+
+function DisplayCalendar() {
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <CalendarComponent />
+      </View>
+      <View style={{ flex: 1, backgroundColor: "gray" }}>
+        <TaskScreen />
+      </View>
+    </View>
+  );
+}
+
+const Stack = createStackNavigator();
 
 function CalendarScreen(props) {
   return (
-    <CalendarList
-      // Callback which gets executed when visible months change in scroll view. Default = undefined
-      onVisibleMonthsChange={(months) => {
-        console.log("now these months are visible", months);
-      }}
-      // Max amount of months allowed to scroll to the past. Default = 50
-      pastScrollRange={5}
-      // Max amount of months allowed to scroll to the future. Default = 50
-      futureScrollRange={5}
-      // Enable or disable scrolling of calendar list
-      scrollEnabled={true}
-      // Enable or disable vertical scroll indicator. Default = false
-      showScrollIndicator={true}
-      onDayPress={(day) => {
-        console.log("selected day", day);
-      }}
-    />
+    <NavigationContainer independent={true}>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Calendar"
+          component={DisplayCalendar}
+          options={{
+            title: "Calendar",
+            headerStyle: {
+              backgroundColor: "orange",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
