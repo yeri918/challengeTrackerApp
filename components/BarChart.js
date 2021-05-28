@@ -16,7 +16,7 @@ function BarProgress({
   thu = 50,
   fri = 50,
   sat = 80,
-  sun = 90,
+  sun = 100,
 }) {
   // console.log("monday:", monday);
   const fill = "rgb(134,65,244)";

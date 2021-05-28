@@ -6,6 +6,9 @@ import WelcomeScreen from "../app/screens/WelcomeScreen";
 import FriendsScreen from "../app/screens/FriendsScreen";
 import ChartScreen from "../app/screens/ChartScreen";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import AddTaskScreen from "../app/screens/AddTaskScreen";
+import ProfileScreen from "../app/screens/ProfileScreen";
+import TestScreen from "../app/screens/TestScreen";
 
 const Tab = createBottomTabNavigator();
 const CustomTabBarButton = ({ children, onPress }) => (
@@ -26,7 +29,7 @@ const MyTabs = () => {
           right: 0,
           elevation: 0,
           backgroundColor: "orange",
-          height: 90,
+          height: 80,
         },
       }}
     >
@@ -44,8 +47,8 @@ const MyTabs = () => {
             >
               <MaterialCommunityIcons
                 name="calendar-month-outline"
-                size={40}
-                style={{ color: focused ? "black" : "#333333" }}
+                size={30}
+                style={{ color: focused ? "#333333" : "#dddddd" }}
               />
             </View>
           ),
@@ -65,8 +68,8 @@ const MyTabs = () => {
             >
               <AntDesign
                 name="checkcircleo"
-                size={40}
-                style={{ color: focused ? "black" : "#333333" }}
+                size={30}
+                style={{ color: focused ? "#333333" : "#dddddd" }}
               />
             </View>
           ),
@@ -74,13 +77,13 @@ const MyTabs = () => {
       />
       <Tab.Screen
         name="Plus"
-        component={WelcomeScreen}
+        component={TestScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <AntDesign
               name="plus"
-              size={40}
-              style={{ color: focused ? "black" : "#333333" }}
+              size={30}
+              style={{ color: focused ? "#333333" : "#dddddd" }}
             />
           ),
           tabBarButton: (props) => <CustomTabBarButton {...props} />,
@@ -100,8 +103,8 @@ const MyTabs = () => {
             >
               <AntDesign
                 name="team"
-                size={40}
-                style={{ color: focused ? "black" : "#333333" }}
+                size={30}
+                style={{ color: focused ? "#333333" : "#dddddd" }}
               />
             </View>
           ),
@@ -109,7 +112,7 @@ const MyTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={CalendarScreen}
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
@@ -121,8 +124,8 @@ const MyTabs = () => {
             >
               <AntDesign
                 name="home"
-                size={40}
-                style={{ color: focused ? "black" : "#333333" }}
+                size={30}
+                style={{ color: focused ? "#333333" : "#dddddd" }}
               />
             </View>
           ),
@@ -142,7 +145,9 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 35,
-    backgroundColor: "yellow",
+    backgroundColor: "orange",
+    borderColor: "#fff",
+    borderWidth: 5,
   },
 });
 export default MyTabs;

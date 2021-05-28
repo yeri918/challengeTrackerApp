@@ -115,7 +115,6 @@ const TaskScreen = ({ navigation }) => {
       <Animated.View
         style={[styles.rowBack, { height: rowHeightAnimatedValue }]}
       >
-        <Text>Left</Text>
         <TouchableOpacity
           style={[styles.backRightBtn, styles.backRightBtnLeft]}
           onPress={onClose}
@@ -223,20 +222,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 5,
     width: 75,
-    height: 60,
+    height: 50,
     paddingRight: 17,
   },
   backRightBtnLeft: {
     backgroundColor: "orange",
     right: 80,
-    height: 60,
+    height: 50,
   },
   backRightBtnRight: {
     backgroundColor: "red",
     right: 5,
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
-    height: 60,
+    height: 50,
   },
   trash: {
     height: 25,
