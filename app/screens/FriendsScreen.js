@@ -3,7 +3,7 @@ import { ScrollView, View, Text } from "react-native";
 import FriendsRanking from "../../components/FriendsRanking";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import ChallengeGroup from "../../components/challengeGroup";
+import ChallengeGroup from "../../components/ChallengeGroup";
 
 const Stack = createStackNavigator();
 

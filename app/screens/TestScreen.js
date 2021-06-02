@@ -18,11 +18,11 @@ function Test() {
   const [task, setTask] = useState("Swimming");
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
-  // const [modeTime, setModeTime] = useState("time");
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
+    console.log(currentDate.toDateString());
     setShow(Platform.OS === "ios");
     setDate(currentDate);
   };
@@ -38,61 +38,79 @@ function Test() {
   };
 
   const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: "white",
-        padding: 16,
-        height: 450,
-        borderRadius: 30,
-      }}
-    >
-      {/* Takes the task */}
-      <Text style={styles.title}>Task:</Text>
-      <TextInput
-        style={styles.textInput}
-        onChangeText={(val) => setTask(val)}
-      />
-      <Text>Task:{task}</Text>
-      {/* <Text>{date}</Text> */}
-      <View style={{ flexDirection: "column" }}>
-        <Text style={styles.title}>Date:</Text>
-      </View>
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={"date"}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-          style={{ marginTop: 5, marginLeft: 10 }}
-        />
-      )}
+    //Code from GitHub link: https://github.com/react-native-datetimepicker/datetimepicker#datepickerandroid
+    <View>
       <View>
-        <Text style={styles.title}>Time:</Text>
+        <Button onPress={showDatepicker} title="Show date picker!" />
       </View>
-
+      <View>
+        <Button onPress={showTimepicker} title="Show time picker!" />
+      </View>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
           value={date}
-          mode={"time"}
+          mode={mode}
           is24Hour={true}
           display="default"
           onChange={onChange}
-          style={{ marginTop: 5, marginLeft: 10, width: 200 }}
-          textColor="black"
         />
       )}
-      {/* <Text style={{ marginLeft: 10, marginTop: 10, fontSize: 20 }}>
-        {date}
-      </Text> */}
-      {/* Done button */}
-      <TouchableOpacity style={styles.submitButton}>
-        <Text style={styles.submitButtonTitle}>Done</Text>
-      </TouchableOpacity>
     </View>
   );
+  // Actual code written for the app
+  //   <View
+  //     style={{
+  //       backgroundColor: "white",
+  //       padding: 16,
+  //       height: 450,
+  //       borderRadius: 30,
+  //     }}
+  //   >
+  //     {/* Takes the task */}
+  //     <Text style={styles.title}>Task:</Text>
+  //     <TextInput
+  //       style={styles.textInput}
+  //       onChangeText={(val) => setTask(val)}
+  //     />
+  //     <Text>Task:{task}</Text>
+  //     {/* <Text>{date}</Text> */}
+  //     <View style={{ flexDirection: "column" }}>
+  //       <Text style={styles.title}>Date:</Text>
+  //     </View>
+  //     <Button onPress={showDatePicker} title="Change Date" />
+  //     {show && (
+  //       <DateTimePicker
+  //         testID="dateTimePicker"
+  //         value={date}
+  //         mode={"date"}
+  //         is24Hour={true}
+  //         display="default"
+  //         onChange={onChange}
+  //         style={{ marginTop: 5, marginLeft: 10 }}
+  //       />
+  //     )}
+  //     <Text>{date.toDateString()}</Text>
+  //     <View>
+  //       <Text style={styles.title}>Time:</Text>
+  //     </View>
+  //     {show && (
+  //       <DateTimePicker
+  //         testID="dateTimePicker"
+  //         value={date}
+  //         mode={"time"}
+  //         is24Hour={true}
+  //         display="default"
+  //         onChange={onChange}
+  //         style={{ marginTop: 5, marginLeft: 10, width: 200 }}
+  //         textColor="black"
+  //       />
+  //     )}
+  //     <TouchableOpacity style={styles.submitButton}>
+  //       <Text style={styles.submitButtonTitle}>Done</Text>
+  //     </TouchableOpacity>
+  //   </View>
+  // );
 
   const sheetRef = React.useRef(null);
   return (
