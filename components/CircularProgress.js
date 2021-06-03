@@ -1,16 +1,17 @@
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components/native";
-import { Animated, Text, StyleSheet } from "react-native";
+import { Animated, Text, StyleSheet, Dimensions } from "react-native";
 
 const EMPTY_COLOR = "#a0a0a1";
 const PROGRESS_COLOR = "orange";
-const SIZE = 230;
+const { width, height } = Dimensions.get("window");
+const SIZE = height * 0.25;
 
 const CircelBase = styled(Animated.View)`
   width: ${SIZE}px;
   height: ${SIZE}px;
   border-radius: ${SIZE / 2}px;
-  border-width: 30px;
+  border-width: 25px;
 `;
 
 const EmptyCircle = styled(CircelBase)`

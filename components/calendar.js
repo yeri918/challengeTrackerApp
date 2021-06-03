@@ -6,7 +6,7 @@ const vacation = { key: "vacation", color: "red", selectedDotColor: "red" };
 const workout = { key: "workout", color: "blue", selectedDotColor: "blue" };
 function CalendarComponent() {
   return (
-    <Calendar
+    <CalendarList
       // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
       current={new Date()}
       // Handler which gets executed on day press. Default = undefined
@@ -52,17 +52,16 @@ const styles = StyleSheet.create({
     borderTopWidth: 5,
     borderWidth: 5,
     borderColor: "#FFBD49",
-    // height: "80%",
-    // width: "100%",
-    backgroundColor: "white",
+    height: "100%",
+    width: "100%",
   },
 });
 
 const theme = {
-  backgroundColor: "gray",
+  // backgroundColor: "gray",
   calendarBackground: "white",
   todayTextColor: "orange",
-  textMonthFontSize: 20,
+  textMonthFontSize: 18,
 };
 
 export default CalendarComponent;

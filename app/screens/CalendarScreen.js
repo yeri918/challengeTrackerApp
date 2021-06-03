@@ -1,20 +1,27 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { ImageBackground, StyleSheet, View, Text } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+} from "react-native";
 import CalendarComponent from "../../components/calendar";
 import TaskScreen from "../../components/TaskComponent";
+import TestScreen from "../../app/screens/TestScreen";
 
 function DisplayCalendar() {
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <CalendarComponent />
-      </View>
+      </SafeAreaView>
       <View style={{ flex: 1, backgroundColor: "gray" }}>
-        <TaskScreen />
+        <TaskScreen date={new Date("2021-05-31")} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -35,6 +42,7 @@ function CalendarScreen(props) {
             headerTintColor: "#fff",
           }}
         />
+        <Stack.Screen name="Add" component={TestScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

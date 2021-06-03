@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 
-function OneFriendRow({ name = "Julie Park", percentage = 50 }) {
+const { width, height } = Dimensions.get("window");
+function OneFriendRow({ rank = 1, name = "Julie Park", percentage = 50 }) {
   return (
     <View style={styles.friendContainer}>
+      <Text style={{ marginLeft: 13, fontWeight: "bold" }}>{rank}</Text>
       <Avatar.Image
         source={require("../app/assets/profile.png")}
-        size={50}
+        size={width * 0.1}
         style={{ marginLeft: 10, marginTop: 2, marginBottom: 2 }}
       />
       <Text
@@ -19,8 +21,8 @@ function OneFriendRow({ name = "Julie Park", percentage = 50 }) {
       >
         {name}
       </Text>
-      <Text style={{ marginLeft: 90, color: "white", fontSize: 18 }}>
-        {percentage}%
+      <Text style={{ marginLeft: 90, color: "black", fontSize: 18 }}>
+        {percentage}
       </Text>
       <AntDesign
         name="heart"
@@ -29,7 +31,7 @@ function OneFriendRow({ name = "Julie Park", percentage = 50 }) {
           marginLeft: 10,
           justifyContent: "flex-end",
           alignSelf: "center",
-          color: "white",
+          color: "black",
         }}
       />
     </View>
@@ -53,13 +55,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 10,
-    backgroundColor: "#C0C0C0",
-    height: 50,
-    width: "85%",
+    backgroundColor: "#fff",
+    height: height * 0.068,
+    width: "95%",
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 5,
-    marginTop: 5,
+    marginBottom: 3,
+    marginTop: 2,
   },
   friendListTitle: {
     height: "12%",
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginTop: 0,
   },
-  title: { fontSize: 18, fontWeight: "bold", color: "white" },
+  title: { fontSize: 18, fontWeight: "bold", color: "#000" },
   caption: {
     fontSize: 13,
     lineHeight: 14,

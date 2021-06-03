@@ -1,15 +1,17 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import CircularProgress from "../../components/CircularProgress";
 import BarProgress from "../../components/BarChart";
-
+import { Feather } from "@expo/vector-icons";
+const { width, height } = Dimensions.get("window");
 function DisplayChart() {
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#FFB554" }}>
+      <View style={{ flex: 0.8, marginBottom: 0 }}>
         <View style={styles.circularHeader}>
+          <Feather name="pie-chart" size={20} style={{ marginLeft: 10 }} />
           <Text style={styles.circularHeaderText}>Today's Progress</Text>
         </View>
         <View style={styles.circularProgress}>
@@ -18,8 +20,9 @@ function DisplayChart() {
           </View>
         </View>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1.2 }}>
         <View style={styles.circularHeader}>
+          <Feather name="bar-chart-2" size={20} style={{ marginLeft: 10 }} />
           <Text style={styles.circularHeaderText}>Weekly Progress</Text>
         </View>
         <View style={styles.barProgress}>
@@ -62,16 +65,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   circularHeader: {
-    height: "12%",
-    width: "90%",
-    backgroundColor: "#FFD283",
+    height: height * 0.07,
+    backgroundColor: "#E4E4E4",
     alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    borderRadius: 30,
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 0,
+    flexDirection: "row",
   },
-  circularHeaderText: { fontSize: 15, color: "#515151", fontWeight: "bold" },
+  circularHeaderText: {
+    fontSize: 17,
+    color: "#515151",
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
   barProgress: {
     flex: 1,
     backgroundColor: "#fff",

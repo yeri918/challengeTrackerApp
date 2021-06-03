@@ -1,21 +1,73 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, FlatList } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
 import { TouchableHighlight } from "react-native-gesture-handler";
+import OneFriendRow from "../components/oneFriendRow";
+import {
+  Materiallcons,
+  MaterialCommunityIcons,
+  Ionicons,
+} from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
 
 function ChallengeGroup() {
+  const navigation = useNavigation();
+  const [group, setGroup] = useState([
+    { id: "1", groupName: "Power", point: 17 },
+    { id: "2", groupName: "Lesgo", point: 21 },
+    { id: "3", groupName: "GO", point: 18 },
+    { id: "4", groupName: "Motivate", point: 35 },
+  ]);
   return (
     <View style={styles.container}>
       <View style={styles.friendListTitle}>
-        <Text style={{ fontSize: 20, color: "#555" }}>Motivation Ranking</Text>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          {/* <Materiallcons name="group-work" /> */}
+          <MaterialCommunityIcons
+            name="account-group-outline"
+            size={20}
+            style={{ marginLeft: 10 }}
+          />
+          <Text style={{ fontSize: 17, color: "#555", marginLeft: 10 }}>
+            Motivation Groups
+          </Text>
+        </View>
+        <Ionicons
+          name="add-circle-outline"
+          size={25}
+          style={{ marginRight: 15 }}
+          onPress={() => navigation.navigate("Add")}
+        />
       </View>
-      {/* <OneFriendRow name={"Annie Park"} percentage={90} />
-      <OneFriendRow name={"Julie Park"} percentage={80} />
-      <OneFriendRow name={"Daniel Kim"} percentage={60} />
-      <OneFriendRow name={"Mary Lee   "} percentage={50} />
-      <OneFriendRow name={"Tania Lim   "} percentage={30} /> */}
+      <FlatList
+        numColumns={2}
+        keyExtractor={(item) => item.id}
+        data={group}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              flexDirection: "column",
+              padding: 20,
+              backgroundColor: "white",
+              marginBottom: 5,
+              marginLeft: 5,
+              marginRight: 2,
+              borderRadius: 15,
+            }}
+          >
+            <Text
+              style={{ fontSize: 15, fontWeight: "bold", alignItems: "center" }}
+            >
+              {item.groupName}
+            </Text>
+            <Text style={{ fontSize: 15, fontWeight: "700" }}>
+              Points: {item.point}
+            </Text>
+          </View>
+        )}
+      />
     </View>
   );
 }
@@ -26,17 +78,16 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "blue",
+    backgroundColor: "#FFB554",
     flex: 1,
     flexDirection: "column",
-    marginBottom: 20,
-    marginTop: 5,
+    marginBottom: 10,
   },
   friendContainer: {
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: "orange",
     height: 60,
     width: "80%",
@@ -46,19 +97,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   friendListTitle: {
-    height: "12%",
-    width: "90%",
-    backgroundColor: "#FFD283",
+    height: 55,
+    width: "100%",
+    backgroundColor: "#E4E4E4",
     alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    borderRadius: 30,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 5,
+    flexDirection: "row",
   },
   title: { fontSize: 18, fontWeight: "bold", color: "white" },
   caption: {
     fontSize: 13,
     lineHeight: 14,
     fontWeight: "500",
+  },
+  list: {
+    backgroundColor: "#fff",
+    marginBottom: 5,
+    padding: 30,
+    fontSize: 15,
+    marginHorizontal: 10,
+    marginTop: 10,
   },
 });

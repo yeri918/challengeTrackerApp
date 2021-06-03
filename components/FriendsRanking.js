@@ -1,22 +1,56 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Dimensions, FlatList } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
-import { color } from "react-native-reanimated";
-import { TouchableHighlight } from "react-native-gesture-handler";
-import OneFriendRow from "../components/oneFriendRow";
 
+import { color } from "react-native-reanimated";
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
+import OneFriendRow from "../components/oneFriendRow";
+import { FontAwesome } from "@expo/vector-icons";
+import OneFriend from "../components/OneFriend";
+
+const { width, height } = Dimensions.get("window");
 function FriendsRanking() {
+  const [group, setGroup] = useState([
+    { id: "1", name: "Julie Park", point: 57 },
+    { id: "2", name: "Annie Park", point: 51 },
+    { id: "3", name: "Gabby Kwon", point: 48 },
+    { id: "4", name: "Michelle Byun", point: 35 },
+    { id: "5", name: "Grace Jung", point: 10 },
+  ]);
   return (
     <View style={styles.container}>
       <View style={styles.friendListTitle}>
-        <Text style={{ fontSize: 20, color: "#555" }}>Motivation Ranking</Text>
+        <FontAwesome name="superpowers" size={20} style={{ marginLeft: 10 }} />
+        <Text
+          style={{
+            fontSize: 17,
+            color: "#000",
+            marginLeft: 10,
+          }}
+        >
+          Motivation Ranking
+        </Text>
       </View>
-      <OneFriendRow name={"Annie Park"} percentage={90} />
-      <OneFriendRow name={"Julie Park"} percentage={80} />
-      <OneFriendRow name={"Daniel Kim"} percentage={60} />
-      <OneFriendRow name={"Mary Lee   "} percentage={50} />
-      <OneFriendRow name={"Tania Lim   "} percentage={30} />
+      <FlatList
+        data={group}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{ padding: 20 }}
+        renderItem={({ item, index }) => {
+          return (
+            <View style={styles.friendContainer}>
+              <OneFriend item={item} index={index} />
+            </View>
+          );
+        }}
+      />
+      {/* <OneFriendRow rank={1} name={"Annie Park"} percentage={90} />
+      <OneFriendRow rank={2} name={"Julie Park"} percentage={80} />
+      <OneFriendRow rank={3} name={"Daniel Kim"} percentage={60} />
+      <OneFriendRow rank={4} name={"Mary Lee   "} percentage={50} />
+      <OneFriendRow rank={5} name={"Tania Lim   "} percentage={30} /> */}
     </View>
 
     //   <View style={{ flex: 1, backgroundColor: "#999999" }} />
@@ -28,36 +62,31 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#FFB554",
     flex: 1,
     flexDirection: "column",
-    marginBottom: 20,
-    marginTop: 5,
   },
   friendContainer: {
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    borderRadius: 5,
-    backgroundColor: "orange",
-    height: 60,
-    width: "80%",
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 10,
-    marginTop: 10,
+    borderRadius: 15,
+    backgroundColor: "white",
+    height: height * 0.08,
+    padding: 20,
+    marginBottom: 5,
+    marginTop: 0,
   },
   friendListTitle: {
-    height: "12%",
-    width: "90%",
-    backgroundColor: "#FFD283",
+    height: 55,
+    width: width,
+    backgroundColor: "#E4E4E4",
     alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    borderRadius: 30,
-    marginBottom: 10,
+    marginTop: 5,
+    marginBottom: 0,
+    flexDirection: "row",
   },
-  title: { fontSize: 18, fontWeight: "bold", color: "white" },
+  title: { fontSize: 17, fontWeight: "bold" },
   caption: {
     fontSize: 13,
     lineHeight: 14,

@@ -137,7 +137,7 @@ const MyTabs = () => {
 
 const styles = StyleSheet.create({
   add: {
-    top: -20,
+    top: -10,
     justifyContent: "center",
     alignItems: "center",
   },
