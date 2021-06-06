@@ -8,7 +8,16 @@ import { Feather } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
 function DisplayChart() {
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFB554" }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#FFB554",
+        height: height + 100,
+        // borderWidth: 3,
+        // borderColor: "orange",
+        borderRadius: 5,
+      }}
+    >
       <View style={{ flex: 0.8, marginBottom: 0 }}>
         <View style={styles.circularHeader}>
           <Feather name="pie-chart" size={20} style={{ marginLeft: 10 }} />
@@ -20,14 +29,27 @@ function DisplayChart() {
           </View>
         </View>
       </View>
-      <View style={{ flex: 1.2 }}>
+      <View
+        style={{
+          height: (height - 60) / 2,
+          // borderWidth: 1,
+          // borderColor: "orange",
+        }}
+      >
         <View style={styles.circularHeader}>
           <Feather name="bar-chart-2" size={20} style={{ marginLeft: 10 }} />
           <Text style={styles.circularHeaderText}>Weekly Progress</Text>
         </View>
         <View style={styles.barProgress}>
-          <View style={{ justifyContent: "flex-start", alignSelf: "center" }}>
-            <BarProgress />
+          <View
+            style={{
+              justifyContent: "flex-start",
+              alignSelf: "center",
+              // borderWidth: 3,
+              // borderColor: "orange",
+            }}
+          >
+            <BarProgress style={{ width: "95%" }} />
           </View>
         </View>
       </View>
@@ -68,9 +90,10 @@ const styles = StyleSheet.create({
     height: height * 0.07,
     backgroundColor: "#E4E4E4",
     alignItems: "center",
-    marginTop: 10,
     marginBottom: 0,
     flexDirection: "row",
+    // borderBottomWidth: 3,
+    // borderBottomColor: "orange",
   },
   circularHeaderText: {
     fontSize: 17,

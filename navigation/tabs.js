@@ -6,9 +6,9 @@ import WelcomeScreen from "../app/screens/WelcomeScreen";
 import FriendsScreen from "../app/screens/FriendsScreen";
 import ChartScreen from "../app/screens/ChartScreen";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import AddTaskScreen from "../app/screens/AddTaskScreen";
+import AddTaskFullScreen from "../app/screens/AddTaskFullScreen";
 import ProfileScreen from "../app/screens/ProfileScreen";
-import TestScreen from "../app/screens/TestScreen";
+import AddTaskScreen from "../app/screens/AddTaskScreen";
 
 const Tab = createBottomTabNavigator();
 const CustomTabBarButton = ({ children, onPress }) => (
@@ -29,7 +29,7 @@ const MyTabs = () => {
           right: 0,
           elevation: 0,
           backgroundColor: "orange",
-          height: 80,
+          height: 70,
         },
       }}
     >
@@ -42,7 +42,6 @@ const MyTabs = () => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 10,
               }}
             >
               <MaterialCommunityIcons
@@ -63,7 +62,6 @@ const MyTabs = () => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 10,
               }}
             >
               <AntDesign
@@ -77,13 +75,13 @@ const MyTabs = () => {
       />
       <Tab.Screen
         name="Plus"
-        component={TestScreen}
+        component={AddTaskFullScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <AntDesign
               name="plus"
               size={30}
-              style={{ color: focused ? "#333333" : "#dddddd" }}
+              style={{ color: focused ? "#333333" : "orange" }}
             />
           ),
           tabBarButton: (props) => <CustomTabBarButton {...props} />,
@@ -98,7 +96,6 @@ const MyTabs = () => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 10,
               }}
             >
               <AntDesign
@@ -119,7 +116,6 @@ const MyTabs = () => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 10,
               }}
             >
               <AntDesign
@@ -137,7 +133,7 @@ const MyTabs = () => {
 
 const styles = StyleSheet.create({
   add: {
-    top: -10,
+    top: -20,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -145,8 +141,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 35,
-    backgroundColor: "orange",
-    borderColor: "#fff",
+    backgroundColor: "#fff",
+    borderColor: "orange",
     borderWidth: 5,
   },
 });

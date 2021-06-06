@@ -48,26 +48,6 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator
-        initialRouteName="Test"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#009387",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      >
-        <Stack.Screen
-          name="Test"
-          component={Test}
-          options={{ title: "Hello" }}
-        />
-        <Stack.Screen name="Welcome!" component={Login} />
-        <Stack.Screen name="Calendar" component={Calendar} />
-      </Stack.Navigator> */}
       <MyTabs></MyTabs>
     </NavigationContainer>
   );

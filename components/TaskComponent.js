@@ -14,8 +14,10 @@ import {
   MaterialCommunityIcons,
   FontAwesome5,
   Ionicons,
+  AntDesign,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
+import { useCallback } from "react";
 
 const TaskScreen = ({ date = new Date() }) => {
   const [listData, setListData] = useState(
@@ -24,20 +26,31 @@ const TaskScreen = ({ date = new Date() }) => {
       title: TaskItem.title,
       date: TaskItem.date,
       time: TaskItem.time,
+      difficulty: TaskItem.difficulty,
+      complete: TaskItem.complete,
     }))
   );
   const closeRow = (rowMap, rowKey) => {
-    console.log("Closed Pressed");
-
-    // console.log(rowKey);
+    // console.log("Closed Pressed");
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
+    console.log("hi");
+    const newData = [...listData];
+    const prevIndex = listData.findIndex((item) => item.key == rowKey);
+    console.log("prevIndex", prevIndex);
+    newData.map((item) =>
+      item.key == prevIndex ? ((item.complete = !item.complete), item) : item
+    );
+    console.log(newData);
+    setListData(newData);
   };
 
   const deleteRow = (rowMap, rowKey) => {
-    console.log("Delete Pressed");
-    closeRow(rowMap, rowKey);
+    console.log("delete row function called");
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key == rowKey);
     newData.splice(prevIndex, 1); //splice(start,deleteCount)
@@ -49,7 +62,11 @@ const TaskScreen = ({ date = new Date() }) => {
   };
 
   const onRightActionStatusChange = (rowKey) => {
-    console.log("onRightActionStatusChangee", rowKey);
+    console.log("onRightActionStatusChange", rowKey);
+  };
+
+  const onLeftActionStatusChange = (rowKey) => {
+    console.log("onLeftActionStatusChange", rowKey);
   };
 
   const onRightAction = (rowKey) => {
@@ -60,6 +77,7 @@ const TaskScreen = ({ date = new Date() }) => {
     const { data, rowHeightAnimatedValue, removeRow, rightActionState } = props;
 
     if (rightActionState) {
+      console.log("rightactionstate is true");
       Animated.timing(rowHeightAnimatedValue, {
         toValue: 0,
         duration: 100,
@@ -72,17 +90,67 @@ const TaskScreen = ({ date = new Date() }) => {
       <Animated.View
         style={[styles.rowFront, { height: rowHeightAnimatedValue }]}
       >
-        <TouchableHighlight style={styles.rowFrontVisible}>
+        <View style={styles.rowFrontVisible}>
           <View>
-            <Text style={styles.title} numberOfLines={1}>
-              {data.item.title}
-            </Text>
+            {!data.item.complete && (
+              <View>
+                <Text style={styles.title} numberOfLines={1}>
+                  {data.item.title}
+                </Text>
 
-            <Text style={styles.details} numberOfLines={1}>
-              {data.item.time}
+                <Text style={styles.details} numberOfLines={1}>
+                  {data.item.time}
+                </Text>
+              </View>
+            )}
+            {data.item.complete && (
+              <View>
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      textDecorationLine: "line-through",
+                      textDecorationStyle: "solid",
+                      color: "#ccc",
+                    },
+                  ]}
+                  numberOfLines={1}
+                >
+                  {data.item.title}
+                </Text>
+                <Text
+                  style={[
+                    styles.details,
+                    {
+                      textDecorationLine: "line-through",
+                      textDecorationStyle: "solid",
+                      color: "#ccc",
+                    },
+                  ]}
+                  numberOfLines={1}
+                >
+                  {data.item.time}
+                </Text>
+              </View>
+            )}
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              flex: 1,
+              flexDirection: "column",
+            }}
+          >
+            <Text style={{ alignSelf: "flex-end", fontSize: 12 }}>
+              Difficulty
+            </Text>
+            <Text
+              style={{ alignSelf: "flex-end", marginRight: 18, fontSize: 20 }}
+            >
+              {data.item.difficulty}
             </Text>
           </View>
-        </TouchableHighlight>
+        </View>
       </Animated.View>
     );
   };
@@ -109,6 +177,9 @@ const TaskScreen = ({ date = new Date() }) => {
     } = props;
 
     if (rightActionActivated) {
+      // console.log(leftOpenValue);
+      console.log("right action activated");
+      // console.log(rightActionValue);
       Animated.spring(rowActionAnimatedValue, {
         toValue: 415,
         useNativeDriver: false,
@@ -128,12 +199,7 @@ const TaskScreen = ({ date = new Date() }) => {
           style={[styles.backRightBtn, styles.backRightBtnLeft]}
           onPress={onClose}
         >
-          <MaterialCommunityIcons
-            name="close-circle-outline"
-            size={25}
-            color="#fff"
-            style={styles.trash}
-          />
+          <AntDesign name="check" size={25} color="#fff" style={styles.trash} />
         </TouchableOpacity>
         <Animated.View style={[styles.backRightBtn, styles.backRightBtnRight]}>
           <TouchableOpacity
@@ -142,7 +208,7 @@ const TaskScreen = ({ date = new Date() }) => {
               styles.backRightBtnRight,
               {
                 flex: 1,
-                width: rowActionAnimatedValue,
+                // width: rowActionAnimatedValue,
               },
             ]}
             onPress={onDelete}
@@ -195,11 +261,24 @@ const TaskScreen = ({ date = new Date() }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={{ flexDirection: "row", flex: 2 }}>
-          <FontAwesome5 name="tasks" style={{ marginLeft: 15 }} size={20} />
-          <Text style={{ marginLeft: 10, fontWeight: "bold", fontSize: 21 }}>
-            Tasks{" "}
+          <FontAwesome5
+            name="tasks"
+            style={{ marginLeft: 15, alignSelf: "center" }}
+            size={20}
+          />
+          <Text
+            style={{
+              marginLeft: 10,
+              fontWeight: "bold",
+              fontSize: 21,
+              alignSelf: "center",
+            }}
+          >
+            Tasks{"  "}
           </Text>
-          <Text style={{ fontSize: 20 }}>{date.toDateString()}</Text>
+          <Text style={{ fontSize: 20, alignSelf: "center" }}>
+            {date.toDateString()}
+          </Text>
         </View>
 
         <View
@@ -215,7 +294,7 @@ const TaskScreen = ({ date = new Date() }) => {
             name="add-circle-outline"
             size={30}
             style={{ justifyContent: "flex-end", marginRight: 15 }}
-            onPress={() => navigation.navigate("Add")}
+            onPress={() => navigation.navigate("To Do")}
           />
         </View>
       </View>
@@ -224,14 +303,17 @@ const TaskScreen = ({ date = new Date() }) => {
         data={listData}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
-        leftOpenValue={75}
-        rightOpenValue={-150}
         disableRightSwipe
-        onRowDidOpen={onRowDidOpen}
-        rightActivationValue={-200}
+        // leftOpenValue={100}
+        rightOpenValue={-150}
+        // onRowDidOpen={onRowDidOpen}
+        rightActivationValue={-250}
+        // leftActivationValue={-500}
         rightActionValue={-500}
-        onRightAction={onRightAction}
+        // leftActionValue={50}
+        // onRightAction={onRightAction}
         onRightActionStatusChange={onRightActionStatusChange}
+        onLeftActionStatusChange={onLeftActionStatusChange}
       />
     </View>
   );
@@ -262,8 +344,10 @@ const styles = StyleSheet.create({
     // backgroundColor: "green",
   },
   backRightBtnLeft: {
-    backgroundColor: "orange",
+    backgroundColor: "#00CD3D",
     right: 75,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     // height: 50,
   },
   backRightBtnRight: {
@@ -286,8 +370,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   details: {
-    fontSize: 12,
-    color: "#999",
+    fontSize: 13,
+    color: "orange",
     marginLeft: 5,
   },
   rowBack: {
@@ -307,9 +391,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 60,
     padding: 10,
+    flexDirection: "row",
   },
   header: {
-    height: "12%",
+    height: "8%",
     backgroundColor: "#E4E4E4",
     alignItems: "center",
     marginTop: 10,

@@ -7,20 +7,22 @@ import {
   View,
   Text,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import CalendarComponent from "../../components/calendar";
 import TaskScreen from "../../components/TaskComponent";
-import TestScreen from "../../app/screens/TestScreen";
 
+import ActionSheet from "../../components/ActionSheet";
+import AddTaskScreen from "../../app/screens/AddTaskScreen";
+
+const { width, height } = Dimensions.get("screen");
 function DisplayCalendar() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ width, height }}>
+      <SafeAreaView style={{ backgroundColor: "white" }}>
         <CalendarComponent />
       </SafeAreaView>
-      <View style={{ flex: 1, backgroundColor: "gray" }}>
-        <TaskScreen date={new Date("2021-05-31")} />
-      </View>
+      <ActionSheet />
     </SafeAreaView>
   );
 }
@@ -42,7 +44,11 @@ function CalendarScreen(props) {
             headerTintColor: "#fff",
           }}
         />
-        <Stack.Screen name="Add" component={TestScreen} />
+        <Stack.Screen
+          name="To Do"
+          component={AddTaskScreen}
+          options={{ headerStyle: { backgroundColor: "orange" } }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

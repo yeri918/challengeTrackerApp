@@ -49,14 +49,23 @@ const OneFriend = ({ item, index }) => {
           {item.name}
         </Text>
       </View>
-      <Text style={{ marginLeft: 90, color: "black", fontSize: 18 }}>
-        {item.point}
-      </Text>
+      <View
+        style={{
+          // borderColor: "blue",
+          // borderWidth: 1,
+          height: height * 0.035,
+          justifyContent: "center",
+        }}
+      >
+        <Text style={{ marginRight: 10, color: "black", fontSize: 16 }}>
+          {item.point} points
+        </Text>
+      </View>
       <TouchableOpacity onPress={() => setClicked(!clicked)}>
         {clicked ? (
           <AntDesign
             name="heart"
-            size={20}
+            size={18}
             style={{
               marginLeft: 10,
               justifyContent: "flex-end",
@@ -67,7 +76,7 @@ const OneFriend = ({ item, index }) => {
         ) : (
           <AntDesign
             name="heart"
-            size={20}
+            size={18}
             style={{
               marginLeft: 10,
               justifyContent: "flex-end",

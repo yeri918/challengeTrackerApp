@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Calendar, CalendarList } from "react-native-calendars";
 
 const vacation = { key: "vacation", color: "red", selectedDotColor: "red" };
 const workout = { key: "workout", color: "blue", selectedDotColor: "blue" };
 function CalendarComponent() {
+  const [date, setDate] = useState(new Date());
   return (
     <CalendarList
       // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
@@ -12,6 +13,8 @@ function CalendarComponent() {
       // Handler which gets executed on day press. Default = undefined
       onDayPress={(day) => {
         console.log("selected day", day);
+        setDate(day);
+        console.log(date);
       }}
       // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
       monthFormat={"yyyy MM"}
