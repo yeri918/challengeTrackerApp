@@ -74,7 +74,7 @@ function ChallengeGroup() {
             <View
               style={{
                 // flexDirection: "column",
-                padding: 15,
+                padding: 10,
                 backgroundColor: "#fff",
                 marginBottom: 5,
                 marginLeft: 5,
@@ -84,7 +84,7 @@ function ChallengeGroup() {
                 // height: "100%",
                 justifyContent: "center",
                 alignItems: "center",
-                borderColor: "#67A1EE",
+                borderColor: "orange",
                 borderWidth: 5,
 
                 // numColumns: 3,
@@ -95,7 +95,8 @@ function ChallengeGroup() {
                   fontSize: 20,
                   fontWeight: "bold",
                   alignItems: "center",
-                  color: "#4780CB",
+                  color: "orange",
+                  marginBottom: 3,
                 }}
               >
                 {item.groupName}

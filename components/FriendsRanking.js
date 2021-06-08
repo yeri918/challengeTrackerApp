@@ -29,6 +29,10 @@ function FriendsRanking() {
     { id: "5", name: "Grace Jung", point: 10 },
   ]);
   const [modal, setModal] = useState(false);
+  const [userToAdd, setUserToAdd] = useState({
+    username: "juliepark",
+    name: "Julie Park",
+  });
   return (
     <View style={styles.container}>
       <View style={styles.friendListTitle}>
@@ -55,7 +59,14 @@ function FriendsRanking() {
             onPress={() => setModal(true)}
           />
           <Modal isVisible={true} transparent={true} visible={modal}>
-            <View style={{ backgroundColor: "#000000aa", flex: 1, height: 50 }}>
+            <View
+              style={{
+                backgroundColor: "#000000aa",
+                flex: 1,
+                height: 50,
+                justifyContent: "center",
+              }}
+            >
               <View
                 style={{
                   backgroundColor: "#fff",
@@ -67,7 +78,7 @@ function FriendsRanking() {
                 <View
                   style={{
                     backgroundColor: "orange",
-                    flex: 1,
+                    height: 50,
                     justifyContent: "center",
                     alignItems: "center",
                     // fontSize: 20,
@@ -87,7 +98,7 @@ function FriendsRanking() {
                     alignItems: "center",
                   }}
                 >
-                  <View style={{ flexDirection: "row" }}>
+                  <View style={{ flexDirection: "row", marginTop: 10 }}>
                     <TextInput
                       style={{
                         marginTop: 5,
@@ -124,6 +135,10 @@ function FriendsRanking() {
                       />
                     </View>
                   </View>
+                  {/* <Text>
+                    {userToAdd.name}
+                    {userToAdd.username}
+                  </Text> */}
                   <TouchableOpacity
                     style={{
                       backgroundColor: "orange",
@@ -133,13 +148,9 @@ function FriendsRanking() {
                       alignItems: "center",
                       borderRadius: 15,
                     }}
+                    onPress={() => setModal(false)}
                   >
-                    <Text
-                      style={{ fontSize: 15, color: "#fff" }}
-                      onPress={() => setModal(false)}
-                    >
-                      Close
-                    </Text>
+                    <Text style={{ fontSize: 15, color: "#fff" }}>Close</Text>
                   </TouchableOpacity>
                 </View>
               </View>

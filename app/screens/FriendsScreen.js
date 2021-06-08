@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ChallengeGroup from "../../components/ChallengeGroup";
 import TestScreen from "./AddTaskScreen";
+import NewChallengeGroup from "../../app/screens/NewChallengeGroup";
 
 const Stack = createStackNavigator();
 
@@ -46,7 +47,17 @@ function FriendsScreen() {
             headerTintColor: "#fff",
           }}
         />
-        <Stack.Screen name="Add" component={TestScreen} />
+        <Stack.Screen
+          name="Add"
+          component={NewChallengeGroup}
+          options={{
+            title: "New Group",
+            headerStyle: {
+              backgroundColor: "orange",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
