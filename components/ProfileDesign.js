@@ -13,9 +13,7 @@ import {
   Caption,
   TouchableRipple,
 } from "react-native-paper";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import BottomSheet from "reanimated-bottom-sheet";
-import Animated from "react-native-reanimated";
+import firebase from "firebase";
 
 function ProfileDesign() {
   return (
@@ -49,6 +47,9 @@ function ProfileDesign() {
           <Caption>Likes This Month</Caption>
         </View>
       </View>
+      <TouchableOpacity onPress={() => firebase.auth().signOut()}>
+        <Text>Sign out</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

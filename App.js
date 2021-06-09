@@ -1,54 +1,51 @@
 import "react-native-gesture-handler"; //https://reactnavigation.org/docs/getting-started
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  Image,
-  SafeAreaView,
-  Button,
-} from "react-native";
-import CalendarScreen from "./app/screens/CalendarScreen";
-import WelcomeScreen from "./app/screens/WelcomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MyTabs from "./navigation/tabs";
-import { Ionicons } from "@expo/vector-icons";
+import LoginScreen from "./app/screens/LoginScreen";
+import LoadingScreen from "./app/screens/LoadingScreen";
 
-//Returns the Calendar screen
-function Calendar() {
-  return <CalendarScreen></CalendarScreen>;
-}
+import * as firebase from "firebase";
+import ApiKeys from "./constants/ApiKeys";
 
-//Returns the Login screen
-function Login() {
-  return <WelcomeScreen></WelcomeScreen>;
-}
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import AddTaskScreen from "./app/screens/AddTaskScreen";
 
-//Test with a button navigating to Calendar Screen
-function Test({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Test</Text>
-      <Button
-        title="Go to calendar screen"
-        onPress={() => navigation.navigate("Calendar")}
-      />
-    </View>
-  );
-}
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
 
-export default function App() {
-  console.log("App executed");
-
-  // const handlePressed = () => console.log("Text Pressed");
-
+const AppScreen = () => {
   return (
     <NavigationContainer>
       <MyTabs></MyTabs>
     </NavigationContainer>
+    // <AppNavigator />
+  );
+};
+export default function App() {
+  console.log("App executed");
+
+  // const handlePressed = () => console.log("Text Pressed");
+  if (firebase.apps.length === 0) {
+    console.log("firebase initialized");
+    firebase.initializeApp(ApiKeys.FirebaseConfig);
+  } else {
+    console.log("else firebase");
+  }
+
+  const AppSwitchNavigator = createSwitchNavigator({
+    LoadingScreen: LoadingScreen,
+    LoginScreen: LoginScreen,
+    AppScreen: AppScreen,
+  });
+
+  const AppNavigator = createAppContainer(AppSwitchNavigator);
+
+  return (
+    // <NavigationContainer>
+    //   <MyTabs></MyTabs>
+    // </NavigationContainer>
+    <AppNavigator />
   );
 }
