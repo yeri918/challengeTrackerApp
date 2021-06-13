@@ -12,10 +12,13 @@ class LoadingScreen extends Component {
     firebase.auth().onAuthStateChanged(
       function (user) {
         console.log("check 1");
-        console.log("user", user);
+        // console.log("user", user);
+        console.log("**UID", user.uid);
         if (user) {
-          console.log("navigate to app screen");
-          this.props.navigation.navigate("AppScreen");
+          console.log("check 1");
+          // var uid = user.uid;
+          this.props.navigation.navigate("AppScreen", { uid: user.uid });
+          console.log("check 2", user.uid);
         } else {
           console.log("navigate to login screen");
           this.props.navigation.navigate("LoginScreen");

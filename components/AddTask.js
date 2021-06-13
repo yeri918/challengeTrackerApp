@@ -36,7 +36,7 @@ function Icon() {
     />
   );
 }
-function AddTask() {
+function AddTask({ uid }) {
   const [task, setTask] = useState("No Task");
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
@@ -263,6 +263,7 @@ function AddTask() {
       />
       <TouchableOpacity
         onPress={() => alert("Added to your calendar")}
+        // onPress={() => console.log(uid)}
         style={styles.submitButton}
       >
         <Text style={styles.submitButtonTitle} onPress={console.log("done")}>

@@ -16,6 +16,16 @@ import {
 import firebase from "firebase";
 
 function ProfileDesign() {
+  const getData = () => {
+    firebase
+      .database()
+      .ref("/users")
+      .on("value", (snapshot) => {
+        const item = snapshot.val();
+        console.log("Item:" + item);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
@@ -49,6 +59,9 @@ function ProfileDesign() {
       </View>
       <TouchableOpacity onPress={() => firebase.auth().signOut()}>
         <Text>Sign out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => getData()}>
+        <Text>Press</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

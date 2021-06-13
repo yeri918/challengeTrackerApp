@@ -15,10 +15,12 @@ import AddTaskScreen from "./app/screens/AddTaskScreen";
 
 // const Stack = createStackNavigator();
 
-const AppScreen = () => {
+const AppScreen = ({ navigation, route }) => {
+  console.log("check 3 - AppScreen", navigation.state.params.uid);
+  console.log("check 3", route);
   return (
     <NavigationContainer>
-      <MyTabs></MyTabs>
+      <MyTabs uid={"000"}></MyTabs>
     </NavigationContainer>
     // <AppNavigator />
   );
@@ -37,7 +39,7 @@ export default function App() {
   const AppSwitchNavigator = createSwitchNavigator({
     LoadingScreen: LoadingScreen,
     LoginScreen: LoginScreen,
-    AppScreen: AppScreen,
+    AppScreen: { screen: AppScreen },
   });
 
   const AppNavigator = createAppContainer(AppSwitchNavigator);

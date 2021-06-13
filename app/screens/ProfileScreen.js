@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { StyleSheet, View, TextInput, Text } from "react-native";
 import ProfileDesign from "../../components/ProfileDesign";
-
+import firebase from "firebase";
 function setProfile() {
   return <ProfileDesign />;
 }

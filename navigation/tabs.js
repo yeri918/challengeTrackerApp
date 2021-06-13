@@ -17,7 +17,8 @@ const CustomTabBarButton = ({ children, onPress }) => (
   </TouchableOpacity>
 );
 
-const MyTabs = () => {
+const MyTabs = ({ uid }) => {
+  console.log("MyTab", uid);
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -36,6 +37,7 @@ const MyTabs = () => {
       <Tab.Screen
         name="Calendar"
         component={CalendarScreen}
+        initialParams={{ uid: uid }}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

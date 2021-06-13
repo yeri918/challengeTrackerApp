@@ -42,6 +42,7 @@ class LoginScreen extends Component {
             .auth()
             .signInWithCredential(credential)
             .then(function (result) {
+              console.log("credential", credential);
               console.log("user signed in");
               console.log("User ID", result.user.uid);
               if (result.additionalUserInfo.isNewUser) {

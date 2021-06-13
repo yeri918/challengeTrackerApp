@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
-function AddTaskScreen(props) {
+function AddTaskScreen({ uid }) {
   return (
     // <NavigationContainer independent={true}>
     //   <Stack.Navigator>
@@ -29,7 +29,7 @@ function AddTaskScreen(props) {
     //   </Stack.Navigator>
     // </NavigationContainer>
     <View>
-      <AddTask />
+      <AddTask uid={uid} />
     </View>
   );
 }

@@ -29,7 +29,8 @@ function DisplayCalendar() {
 
 const Stack = createStackNavigator();
 
-function CalendarScreen(props) {
+function CalendarScreen({ uid }) {
+  console.log("Calendar screen", uid);
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
@@ -47,6 +48,7 @@ function CalendarScreen(props) {
         <Stack.Screen
           name="To Do"
           component={AddTaskScreen}
+          initialParams={{ uid: uid }}
           options={{ headerStyle: { backgroundColor: "orange" } }}
         />
       </Stack.Navigator>
