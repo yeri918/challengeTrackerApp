@@ -17,10 +17,10 @@ import AddTaskScreen from "./app/screens/AddTaskScreen";
 
 const AppScreen = ({ navigation, route }) => {
   console.log("check 3 - AppScreen", navigation.state.params.uid);
-  console.log("check 3", route);
+  // console.log("check 3", route);
   return (
     <NavigationContainer>
-      <MyTabs uid={"000"}></MyTabs>
+      <MyTabs uid={navigation.state.params.uid}></MyTabs>
     </NavigationContainer>
     // <AppNavigator />
   );

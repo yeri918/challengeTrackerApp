@@ -11,7 +11,8 @@ import {
 import TaskScreen from "./TaskComponent";
 
 const { width, height } = Dimensions.get("window");
-const ActionSheet = (props) => {
+const ActionSheet = ({ uid }) => {
+  console.log("ActionSheet", uid);
   const [alignment] = useState(new Animated.Value(0));
 
   const bringUpActionSheet = () => {
@@ -67,6 +68,7 @@ const ActionSheet = (props) => {
         <TaskScreen
           style={{ width: width, position: "absolute" }}
           date={new Date()}
+          uid={uid}
         />
       </View>
 

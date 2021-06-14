@@ -45,10 +45,11 @@ class LoginScreen extends Component {
               console.log("credential", credential);
               console.log("user signed in");
               console.log("User ID", result.user.uid);
+              console.log("check 4");
               if (result.additionalUserInfo.isNewUser) {
                 firebase
-                  .database()
-                  .ref("/users/" + result.user.uid)
+                  .firestore()
+                  .doc("/users/" + result.user.uid)
                   .set({
                     gmail: result.user.email,
                     profile_picture: result.additionalUserInfo.profile.picture,
@@ -58,9 +59,10 @@ class LoginScreen extends Component {
                   });
               } else {
                 console.log("user uid", result.user.uid);
+                console.log("check 5");
                 firebase
-                  .database()
-                  .ref("/users/" + result.user.uid)
+                  .firestore()
+                  .doc("/users/" + result.user.uid)
                   .update({ last_logged_in: Date.now() });
               }
             })

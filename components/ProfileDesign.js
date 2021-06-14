@@ -15,14 +15,40 @@ import {
 } from "react-native-paper";
 import firebase from "firebase";
 
-function ProfileDesign() {
-  const getData = () => {
-    firebase
-      .database()
-      .ref("/users")
-      .on("value", (snapshot) => {
-        const item = snapshot.val();
-        console.log("Item:" + item);
+function ProfileDesign({ uid }) {
+  console.log(uid);
+  const firebaseRef = firebase.firestore();
+  const collectionRef = firebaseRef.doc("test/" + uid);
+  const query = () => {
+    firebaseRef
+      .collection("users")
+      .where("last_name", "==", "Park")
+      .get()
+      .then(function (doc) {
+        if (doc.empty) {
+          console.log("no matching data");
+        } else {
+          doc.forEach((doc) => {
+            console.log(doc.data());
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log("got an error:", error);
+      });
+  };
+  const setData = () => {
+    collectionRef
+      .set({
+        title: "monday",
+        content: "raining",
+      })
+      .then(function () {
+        console.log("status saved!");
+        // console.log(query);
+      })
+      .catch(function (error) {
+        console.log("Got an error: ", error);
       });
   };
 
@@ -60,8 +86,11 @@ function ProfileDesign() {
       <TouchableOpacity onPress={() => firebase.auth().signOut()}>
         <Text>Sign out</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => getData()}>
-        <Text>Press</Text>
+      <TouchableOpacity onPress={() => setData()}>
+        <Text style={{ fontSize: 30 }}>Press</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => query()}>
+        <Text style={{ fontSize: 30 }}>Press2</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

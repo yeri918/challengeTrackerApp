@@ -19,7 +19,8 @@ import {
 import { useNavigation } from "@react-navigation/core";
 import { useCallback } from "react";
 
-const TaskScreen = ({ date = new Date() }) => {
+const TaskScreen = ({ date = new Date(), uid }) => {
+  console.log("TaskScreen", uid);
   const [listData, setListData] = useState(
     Tasks.map((TaskItem, index) => ({
       key: `${index}`,

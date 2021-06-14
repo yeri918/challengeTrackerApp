@@ -4,20 +4,26 @@ import React, { useState } from "react";
 import { StyleSheet, View, TextInput, Text } from "react-native";
 import ProfileDesign from "../../components/ProfileDesign";
 import firebase from "firebase";
-function setProfile() {
-  return <ProfileDesign />;
+
+function setProfile(props) {
+  // console.log("setProfile:", props);
+  // console.log("setProfile-route", route);
+  return <ProfileDesign uid={props.route.params.userid} />;
 }
 
 const Stack = createStackNavigator();
 // const ProfileStack = createStackNavigator();
 
 function ProfileScreen(props) {
+  const [uid, setUid] = useState(props.route.params.userID);
+  console.log("ProfileScreen:", props.route.params.userID);
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
         <Stack.Screen
           name="TakeInputs"
           component={setProfile}
+          initialParams={{ userid: uid }}
           options={{
             title: "Profile",
             headerStyle: {

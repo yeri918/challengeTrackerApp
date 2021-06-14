@@ -17,6 +17,7 @@ import BottomSheet from "reanimated-bottom-sheet";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Fontisto } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
+import firebase from "firebase";
 
 function Icon() {
   return (
@@ -112,6 +113,28 @@ function AddTask({ uid }) {
 
   const onValueChange = (difficulty) => {
     setDifficulty(difficulty);
+  };
+
+  const setData = () => {
+    firebase
+      .firestore()
+      .collection("todo")
+      .add({
+        uid: uid,
+        task: task,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        noTime: noTime,
+        difficulty: difficulty,
+        completion: false,
+      })
+      .then(function () {
+        console.log("AddTask- setData successful");
+      })
+      .catch(function (e) {
+        console.log("AddTask-error", e);
+      });
   };
 
   const navigation = useNavigation();
@@ -262,13 +285,13 @@ function AddTask({ uid }) {
         onValueChange={onValueChange}
       />
       <TouchableOpacity
-        onPress={() => alert("Added to your calendar")}
+        onPress={() => {
+          alert("Added to your calendar"), setData();
+        }}
         // onPress={() => console.log(uid)}
         style={styles.submitButton}
       >
-        <Text style={styles.submitButtonTitle} onPress={console.log("done")}>
-          Done
-        </Text>
+        <Text style={styles.submitButtonTitle}>Done</Text>
       </TouchableOpacity>
     </ScrollView>
   );

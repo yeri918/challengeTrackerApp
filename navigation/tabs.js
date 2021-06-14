@@ -78,6 +78,7 @@ const MyTabs = ({ uid }) => {
       <Tab.Screen
         name="Plus"
         component={AddTaskFullScreen}
+        initialParams={{ uid: uid }}
         options={{
           tabBarIcon: ({ focused }) => (
             <AntDesign
@@ -92,6 +93,7 @@ const MyTabs = ({ uid }) => {
       <Tab.Screen
         name="Connect"
         component={FriendsScreen}
+        initialParams={{ uid: uid }}
         options={{
           tabBarIcon: ({ focused }) => (
             <View
@@ -112,6 +114,7 @@ const MyTabs = ({ uid }) => {
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
+        initialParams={{ userID: uid }}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

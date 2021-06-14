@@ -9,34 +9,38 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import CalendarComponent from "../../components/calendar";
+import CalendarComponent from "../../components/Calendar";
 import TaskScreen from "../../components/TaskComponent";
 
 import ActionSheet from "../../components/ActionSheet";
 import AddTaskScreen from "../../app/screens/AddTaskScreen";
+import { useState } from "react/cjs/react.development";
 
 const { width, height } = Dimensions.get("screen");
-function DisplayCalendar() {
+function DisplayCalendar(props) {
+  console.log("DisplayCalendar", props.route.params.uid);
   return (
-    <SafeAreaView style={{ width, height }}>
-      <SafeAreaView style={{ backgroundColor: "white" }}>
-        <CalendarComponent />
-      </SafeAreaView>
-      <ActionSheet />
-    </SafeAreaView>
+    // <SafeAreaView style={{ width, height }}>
+    //   <SafeAreaView style={{ backgroundColor: "white" }}>
+    <CalendarComponent />
+    // </SafeAreaView>
+    // <ActionSheet uid={props.route.params.uid} />
+    // </SafeAreaView>
   );
 }
 
 const Stack = createStackNavigator();
 
-function CalendarScreen({ uid }) {
-  console.log("Calendar screen", uid);
+function CalendarScreen(props) {
+  const [uid, setUid] = useState(props.route.params.uid);
+  console.log("Calendar screen", props.route.params.uid);
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
         <Stack.Screen
           name="Calendar"
           component={DisplayCalendar}
+          initialParams={{ uid: uid }}
           options={{
             title: "Calendar",
             headerStyle: {
@@ -48,7 +52,7 @@ function CalendarScreen({ uid }) {
         <Stack.Screen
           name="To Do"
           component={AddTaskScreen}
-          initialParams={{ uid: uid }}
+          initialParams={{ uid: props.route.params.uid }}
           options={{ headerStyle: { backgroundColor: "orange" } }}
         />
       </Stack.Navigator>
