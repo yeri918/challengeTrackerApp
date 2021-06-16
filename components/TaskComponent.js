@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -17,34 +17,41 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
-import { useCallback } from "react";
+import firebase from "firebase";
 
-const TaskScreen = ({ date = new Date(), uid }) => {
-  console.log("TaskScreen", uid);
-  const [listData, setListData] = useState(
-    Tasks.map((TaskItem, index) => ({
-      key: `${index}`,
-      title: TaskItem.title,
-      date: TaskItem.date,
-      time: TaskItem.time,
-      difficulty: TaskItem.difficulty,
-      complete: TaskItem.complete,
-    }))
-  );
+const TaskScreen = ({ date, uid, userData }) => {
+  const [listData, setListData] = useState(userData);
+
+  useEffect(() => {
+    if (userData !== undefined) {
+      setListData(userData);
+    }
+  }, [userData]);
+
   const closeRow = (rowMap, rowKey) => {
-    // console.log("Closed Pressed");
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
-    console.log("hi");
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key == rowKey);
-    console.log("prevIndex", prevIndex);
-    newData.map((item) =>
-      item.key == prevIndex ? ((item.complete = !item.complete), item) : item
-    );
-    console.log(newData);
-    setListData(newData);
+    firebase
+      .firestore()
+      .collection("todo")
+      .doc(newData[prevIndex].docID)
+      .update({
+        completion: !newData[prevIndex].complete,
+      })
+      .then(() => {
+        newData.map((item) =>
+          item.key == prevIndex
+            ? ((item.complete = !item.complete), item)
+            : item
+        );
+        setListData(newData);
+      })
+      .catch(function (error) {
+        console.log("competion", error);
+      });
   };
 
   const deleteRow = (rowMap, rowKey) => {
@@ -54,8 +61,19 @@ const TaskScreen = ({ date = new Date(), uid }) => {
     }
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key == rowKey);
-    newData.splice(prevIndex, 1); //splice(start,deleteCount)
-    setListData(newData);
+
+    firebase
+      .firestore()
+      .collection("todo")
+      .doc(newData[prevIndex].docID)
+      .delete()
+      .then(() => {
+        newData.splice(prevIndex, 1); //splice(start,deleteCount)
+        setListData(newData);
+      })
+      .catch(function (error) {
+        console.log("delete unsuccessful", error);
+      });
   };
 
   const onRowDidOpen = (rowKey) => {
@@ -74,6 +92,9 @@ const TaskScreen = ({ date = new Date(), uid }) => {
     console.log("onRightAction", rowKey);
   };
 
+  const deleteTask = () => {
+    console.log("deleted");
+  };
   const VisibleItem = (props) => {
     const { data, rowHeightAnimatedValue, removeRow, rightActionState } = props;
 
@@ -278,7 +299,7 @@ const TaskScreen = ({ date = new Date(), uid }) => {
             Tasks{"  "}
           </Text>
           <Text style={{ fontSize: 20, alignSelf: "center" }}>
-            {date.toDateString()}
+            {date.dateString}
           </Text>
         </View>
 
@@ -302,15 +323,16 @@ const TaskScreen = ({ date = new Date(), uid }) => {
 
       <SwipeListView
         data={listData}
+        // data={userData}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         disableRightSwipe
         // leftOpenValue={100}
         rightOpenValue={-150}
         // onRowDidOpen={onRowDidOpen}
-        rightActivationValue={-250}
+        // rightActivationValue={-250}
         // leftActivationValue={-500}
-        rightActionValue={-500}
+        // rightActionValue={-500}
         // leftActionValue={50}
         // onRightAction={onRightAction}
         onRightActionStatusChange={onRightActionStatusChange}

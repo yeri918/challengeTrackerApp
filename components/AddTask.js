@@ -38,6 +38,7 @@ function Icon() {
   );
 }
 function AddTask({ uid }) {
+  console.log("AddTask-uid", uid);
   const [task, setTask] = useState("No Task");
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
@@ -116,6 +117,8 @@ function AddTask({ uid }) {
   };
 
   const setData = () => {
+    startTime.setMilliseconds(0);
+    endTime.setMilliseconds(0);
     firebase
       .firestore()
       .collection("todo")
@@ -286,7 +289,22 @@ function AddTask({ uid }) {
       />
       <TouchableOpacity
         onPress={() => {
-          alert("Added to your calendar"), setData();
+          alert("Added to your calendar"),
+            console.log(
+              "date",
+              date,
+              " task",
+              task,
+              " start time",
+              startTime,
+              " endTime",
+              endTime,
+              " noTime",
+              noTime,
+              "difficulty",
+              difficulty
+            ),
+            setData();
         }}
         // onPress={() => console.log(uid)}
         style={styles.submitButton}

@@ -1,13 +1,93 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, Dimensions } from "react-native";
 import { Calendar, CalendarList } from "react-native-calendars";
 import ActionSheet from "../components/ActionSheet";
+import firebase from "firebase";
 
 const vacation = { key: "vacation", color: "red", selectedDotColor: "red" };
 const workout = { key: "workout", color: "blue", selectedDotColor: "blue" };
 const { width, height } = Dimensions.get("screen");
-function CalendarComponent() {
-  const [date, setDate] = useState(new Date());
+
+function CalendarComponent({ uid }) {
+  const fullDate = new Date();
+  const [date, setDate] = useState({
+    dateString: fullDate.toDateString(),
+    day: fullDate.getDate(),
+    month: fullDate.getMonth() + 1,
+    timestamp: fullDate.getTime(),
+    year: fullDate.getFullYear(),
+  });
+
+  const [listData, setListData] = useState(new Map());
+  var testList = [];
+  var nextDate = new Date(date.dateString);
+  nextDate.setDate(nextDate.getDate() + 1);
+
+  useEffect(() => {
+    getData(date, nextDate);
+  }, []);
+
+  const getData = async (date, nextDate) => {
+    await firebase
+      .firestore()
+      .collection("todo")
+      .where("uid", "==", uid)
+      .where("date", ">=", new Date(date.dateString))
+      .where("date", "<", nextDate)
+      .get()
+      .then(function (doc) {
+        if (doc.empty) {
+          console.log("no matching data");
+          testList = [];
+        } else {
+          var key = 0;
+          var time;
+          doc.forEach((doc) => {
+            if (doc.data().noTime) {
+              time = "Full day";
+            } else {
+              var startT = new Date(
+                doc.data().startTime.seconds * 1000
+              ).toLocaleTimeString();
+              var startTIndex = new Date(doc.data().startTime.seconds * 1000)
+                .toLocaleTimeString()
+                .split(":", 2)
+                .join(":").length;
+              console.log(startTIndex);
+              var start =
+                startT.substring(0, startTIndex) +
+                startT.substring(startTIndex + 4, startT.length);
+
+              var endT = new Date(
+                doc.data().endTime.seconds * 1000
+              ).toLocaleTimeString();
+              var endTIndex = new Date(doc.data().endTime.seconds * 1000)
+                .toLocaleTimeString()
+                .split(":", 2)
+                .join(":").length;
+              var end =
+                endT.substring(0, endTIndex) +
+                endT.substring(endTIndex + 4, endT.length);
+
+              time = start + " - " + end;
+              console.log(time);
+            }
+            testList.push({
+              key: `${key}`,
+              title: doc.data().task,
+              time: time,
+              difficulty: doc.data().difficulty,
+              complete: doc.data().completion,
+              docID: doc.id,
+            });
+            key += 1;
+          });
+        }
+      })
+      .then(() => {
+        setListData(testList);
+      });
+  };
   return (
     <SafeAreaView style={{ width, height }}>
       <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -16,9 +96,16 @@ function CalendarComponent() {
           current={new Date()}
           // Handler which gets executed on day press. Default = undefined
           onDayPress={(day) => {
-            console.log("selected day", day);
+            console.log("-----CALENDARLIST(onDayPress)-----");
+            console.log("selected day", day.dateString);
             setDate(day);
-            console.log(date);
+
+            // console.log("date:", date);
+            nextDate = new Date(day.dateString);
+            nextDate.setDate(nextDate.getDate() + 1);
+            console.log("next date:", nextDate);
+            getData(day, nextDate);
+            console.log(listData);
           }}
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
           monthFormat={"yyyy MM"}
@@ -51,7 +138,7 @@ function CalendarComponent() {
           markingType={"multi-dot"}
         />
       </SafeAreaView>
-      <ActionSheet uid={"000"} />
+      <ActionSheet uid={uid} date={date} data={listData} />
     </SafeAreaView>
   );
 }

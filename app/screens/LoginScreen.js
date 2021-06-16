@@ -23,13 +23,13 @@ class LoginScreen extends Component {
     return false;
   };
   onSignIn = (googleUser) => {
-    console.log("Google Auth Response", googleUser);
+    // console.log("Google Auth Response", googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
     var unsubscribe = firebase.auth().onAuthStateChanged(
       function (firebaseUser) {
         unsubscribe();
         // Check if we are already signed-in Firebase with the correct user.
-        console.log("idToken", googleUser.idToken);
+        // console.log("idToken", googleUser.idToken);
         if (!this.isUserEqual(googleUser, firebaseUser)) {
           // Build Firebase credential with the Google ID token.
           var credential = firebase.auth.GoogleAuthProvider.credential(
@@ -42,10 +42,10 @@ class LoginScreen extends Component {
             .auth()
             .signInWithCredential(credential)
             .then(function (result) {
-              console.log("credential", credential);
-              console.log("user signed in");
-              console.log("User ID", result.user.uid);
-              console.log("check 4");
+              // console.log("credential", credential);
+              // console.log("user signed in");
+              // console.log("User ID", result.user.uid);
+              // console.log("check 4");
               if (result.additionalUserInfo.isNewUser) {
                 firebase
                   .firestore()
@@ -58,8 +58,8 @@ class LoginScreen extends Component {
                     created_at: Date.now(),
                   });
               } else {
-                console.log("user uid", result.user.uid);
-                console.log("check 5");
+                // console.log("user uid", result.user.uid);
+                // console.log("check 5");
                 firebase
                   .firestore()
                   .doc("/users/" + result.user.uid)

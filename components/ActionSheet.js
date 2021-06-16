@@ -11,8 +11,10 @@ import {
 import TaskScreen from "./TaskComponent";
 
 const { width, height } = Dimensions.get("window");
-const ActionSheet = ({ uid }) => {
-  console.log("ActionSheet", uid);
+const ActionSheet = ({ uid, date, data }) => {
+  // console.log("ActionSheet", uid);
+  // console.log("ActionSheet", date);
+  // console.log("ActionSheet", data);
   const [alignment] = useState(new Animated.Value(0));
 
   const bringUpActionSheet = () => {
@@ -66,9 +68,10 @@ const ActionSheet = ({ uid }) => {
       </View>
       <View style={{ flex: 30, width: width - 10 }}>
         <TaskScreen
-          style={{ width: width, position: "absolute" }}
-          date={new Date()}
+          date={date}
           uid={uid}
+          userData={data}
+          style={{ width: width, position: "absolute" }}
         />
       </View>
 

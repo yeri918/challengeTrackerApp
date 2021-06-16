@@ -22,7 +22,7 @@ function DisplayCalendar(props) {
   return (
     // <SafeAreaView style={{ width, height }}>
     //   <SafeAreaView style={{ backgroundColor: "white" }}>
-    <CalendarComponent />
+    <CalendarComponent uid={props.route.params.uid} />
     // </SafeAreaView>
     // <ActionSheet uid={props.route.params.uid} />
     // </SafeAreaView>
