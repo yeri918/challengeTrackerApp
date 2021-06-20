@@ -4,12 +4,9 @@ import {
   Text,
   StyleSheet,
   Animated,
-  TouchableHighlight,
   TouchableOpacity,
-  StatusBar,
 } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
-import Tasks from "../components/taskList";
 import {
   MaterialCommunityIcons,
   FontAwesome5,
@@ -21,20 +18,22 @@ import firebase from "firebase";
 
 const TaskScreen = ({ date, uid, userData }) => {
   const [listData, setListData] = useState(userData);
-
+  // console.log(userData);
   useEffect(() => {
     if (userData !== undefined) {
       setListData(userData);
     }
   }, [userData]);
 
-  const closeRow = (rowMap, rowKey) => {
+  const closeRow = async (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key == rowKey);
-    firebase
+    var progressValue;
+
+    await firebase
       .firestore()
       .collection("todo")
       .doc(newData[prevIndex].docID)
@@ -47,13 +46,75 @@ const TaskScreen = ({ date, uid, userData }) => {
             ? ((item.complete = !item.complete), item)
             : item
         );
+        if (newData[prevIndex].complete) {
+          progressValue = newData[prevIndex].difficulty;
+        } else {
+          progressValue = -newData[prevIndex].difficulty;
+        }
         setListData(newData);
       })
       .catch(function (error) {
-        console.log("competion", error);
+        console.log("completion", error);
+      });
+
+    updateProgress(progressValue);
+  };
+
+  const updateProgress = async (progressValue) => {
+    // console.log(newData[prevIndex].docID);
+    await firebase
+      .firestore()
+      .collection("progress")
+      .where("uid", "==", uid)
+      .where("date", "==", new Date(date.dateString))
+      .get()
+      .then(function (doc) {
+        if (doc.empty && progressValue > 0) {
+          console.log("no matching data");
+          console.log(uid, date.dateString, progressValue);
+          firebase
+            .firestore()
+            .collection("progress")
+            .add({
+              uid: uid,
+              date: new Date(date.dateString),
+              progress: progressValue,
+            })
+            .then(console.log("post successful"))
+            .catch(function (error) {
+              console.log("post-error", error);
+            });
+        } else {
+          doc.forEach((doc) => {
+            console.log(doc.data().progress);
+            console.log(doc.id);
+            firebase
+              .firestore()
+              .collection("progress")
+              .doc(doc.id)
+              .update({ progress: doc.data().progress + progressValue });
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log("progress -error", error);
       });
   };
 
+  // const addToProgress = ({uid,date,progressValue}) => {
+  //   firebase
+  //           .firestore()
+  //           .collection("progress")
+  //           .add({
+  //             uid: uid,
+  //             date: date,
+  //             progress: progressValue,
+  //           })
+  //           .then(console.log("post successful"))
+  //           .catch(function (error) {
+  //             console.log("post-error", error);
+  //           });
+  // }
   const deleteRow = (rowMap, rowKey) => {
     console.log("delete row function called");
     if (rowMap[rowKey]) {
@@ -61,13 +122,32 @@ const TaskScreen = ({ date, uid, userData }) => {
     }
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key == rowKey);
-
+    var progressValue;
     firebase
       .firestore()
       .collection("todo")
       .doc(newData[prevIndex].docID)
       .delete()
       .then(() => {
+        if (newData[prevIndex].complete) {
+          progressValue = newData[prevIndex].difficulty;
+          firebase
+            .firestore()
+            .collection("progress")
+            .where("date", "==", date)
+            .get()
+            .then(function (doc) {
+              doc.forEach((doc) =>
+                firebase
+                  .firestore()
+                  .collection("progress")
+                  .doc(doc.id)
+                  .update({
+                    progress: doc.data().progress - progressValue,
+                  })
+              );
+            });
+        }
         newData.splice(prevIndex, 1); //splice(start,deleteCount)
         setListData(newData);
       })
@@ -95,6 +175,7 @@ const TaskScreen = ({ date, uid, userData }) => {
   const deleteTask = () => {
     console.log("deleted");
   };
+
   const VisibleItem = (props) => {
     const { data, rowHeightAnimatedValue, removeRow, rightActionState } = props;
 

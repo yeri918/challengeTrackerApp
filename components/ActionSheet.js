@@ -34,11 +34,11 @@ const ActionSheet = ({ uid, date, data }) => {
   };
 
   const gestureHandler = (e) => {
-    console.log("gestureHandler");
-    console.log(e.nativeEvent.contentOffset.y);
+    // console.log("gestureHandler");
+    // console.log(e.nativeEvent.contentOffset.y);
     if (e.nativeEvent.contentOffset.y > 0) {
-      console.log("hi");
-      console.log("height:", height, "width:", width);
+      // console.log("hi");
+      // console.log("height:", height, "width:", width);
       bringUpActionSheet();
     } else if (e.nativeEvent.contentOffset.y < 0) {
       lowerTheActionSheet();
@@ -64,6 +64,7 @@ const ActionSheet = ({ uid, date, data }) => {
         <ScrollView
           onScroll={(e) => gestureHandler(e)}
           style={styles.grabber}
+          scrollEventThrottle={0}
         ></ScrollView>
       </View>
       <View style={{ flex: 30, width: width - 10 }}>
@@ -74,8 +75,6 @@ const ActionSheet = ({ uid, date, data }) => {
           style={{ width: width, position: "absolute" }}
         />
       </View>
-
-      {/* <Text>hi</Text> */}
     </Animated.View>
   );
 };

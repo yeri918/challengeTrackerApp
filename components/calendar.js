@@ -28,12 +28,22 @@ function CalendarComponent({ uid }) {
   }, []);
 
   const getData = async (date, nextDate) => {
+    // console.log("----", new Date(date.dateString));
+    // console.log("----", nextDate);
+    // console.log(new Date());
+    // console.log(date);
+    console.log("------------");
+    console.log(new Date(date.dateString).toLocaleString());
+    console.log(new Date(date.dateString).toString());
+    var selectedDate = new Date(date.dateString);
+    selectedDate.setHours(0, 0, 0, 0);
+    console.log(selectedDate);
     await firebase
       .firestore()
       .collection("todo")
       .where("uid", "==", uid)
-      .where("date", ">=", new Date(date.dateString))
-      .where("date", "<", nextDate)
+      .where("date", ">=", selectedDate)
+      // .where("date", "<", nextDate)
       .get()
       .then(function (doc) {
         if (doc.empty) {
@@ -43,6 +53,7 @@ function CalendarComponent({ uid }) {
           var key = 0;
           var time;
           doc.forEach((doc) => {
+            console.log("DATA", doc.data());
             if (doc.data().noTime) {
               time = "Full day";
             } else {
@@ -53,7 +64,6 @@ function CalendarComponent({ uid }) {
                 .toLocaleTimeString()
                 .split(":", 2)
                 .join(":").length;
-              console.log(startTIndex);
               var start =
                 startT.substring(0, startTIndex) +
                 startT.substring(startTIndex + 4, startT.length);
@@ -70,8 +80,8 @@ function CalendarComponent({ uid }) {
                 endT.substring(endTIndex + 4, endT.length);
 
               time = start + " - " + end;
-              console.log(time);
             }
+            // console.log("---(DATE)", doc.data().date.toDate().toUTCString());
             testList.push({
               key: `${key}`,
               title: doc.data().task,
@@ -105,7 +115,7 @@ function CalendarComponent({ uid }) {
             nextDate.setDate(nextDate.getDate() + 1);
             console.log("next date:", nextDate);
             getData(day, nextDate);
-            console.log(listData);
+            // console.log(listData);
           }}
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
           monthFormat={"yyyy MM"}

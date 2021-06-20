@@ -37,7 +37,8 @@ const CoverIndicator = styled(CircelBase)`
   border-bottom-color: transparent;
 `;
 
-function CircularProgress({ progress = 0 }) {
+function CircularProgress({ progress = 0, total, doneToday }) {
+  // console.log("CircularProgress", progress, total, doneToday);
   const animatedProgress = useRef(new Animated.Value(0)).current;
 
   const animateProgress = useRef((toValue) => {
@@ -79,7 +80,10 @@ function CircularProgress({ progress = 0 }) {
           opacity: secondIndicatorVisibility,
         }}
       />
-      <Text style={styles.progressText}>{progress}%</Text>
+      <Text style={styles.progressText}>{progress.toFixed(0)}%</Text>
+      {/* <Text style={styles.subText}>
+        {doneToday}/{total}
+      </Text> */}
     </EmptyCircle>
   );
 }
@@ -90,6 +94,16 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "45deg" }],
     fontSize: 50,
     fontWeight: "bold",
+  },
+  subText: {
+    color: "black",
+    transform: [{ rotate: "45deg" }],
+    fontSize: 20,
+    fontWeight: "bold",
+    borderWidth: 5,
+    borderColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

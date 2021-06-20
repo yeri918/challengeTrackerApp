@@ -58,6 +58,7 @@ const MyTabs = ({ uid }) => {
       <Tab.Screen
         name="Chart"
         component={ChartScreen}
+        initialParams={{ uid: uid }}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

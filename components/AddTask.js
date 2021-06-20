@@ -1,5 +1,4 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -11,9 +10,6 @@ import {
   Sli,
   ScrollView,
 } from "react-native";
-import Animated from "react-native-reanimated";
-import BottomSheet from "reanimated-bottom-sheet";
-
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Fontisto } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
@@ -27,8 +23,6 @@ function Icon() {
       style={{
         justifyContent: "center",
         alignSelf: "center",
-        // borderWidth: 2,
-        // borderColor: "red",
         marginTop: 8,
         marginLeft: 5,
         color: "orange",
@@ -37,24 +31,21 @@ function Icon() {
     />
   );
 }
+
 function AddTask({ uid }) {
-  console.log("AddTask-uid", uid);
   const [task, setTask] = useState("No Task");
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  // const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [showDate, setShowDate] = useState(false);
   const [showStartTime, setShowStartTime] = useState(false);
   const [showEndTime, setShowEndTime] = useState(false);
   const [noTime, setNoTime] = useState(false);
   const [difficulty, setDifficulty] = useState(1);
-  // const [count, setCount] = useState(0);
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    console.log(currentDate.toDateString());
     setShow(Platform.OS === "ios");
     if (!show) {
       console.log("false show");
@@ -64,21 +55,13 @@ function AddTask({ uid }) {
 
   const onChangeStartTime = (event, selectedStartTime) => {
     const currentTime = selectedStartTime || startTime;
-    // console.log(currentDate.toDateString());
     setShow(Platform.OS === "ios");
-    // if (!show) {
-    //   console.log("false show");
-    // }
     setStartTime(currentTime);
   };
 
   const onChangeEndTime = (event, selectedEndTime) => {
     const currentTime = selectedEndTime || endTime;
-    // console.log(currentDate.toDateString());
     setShow(Platform.OS === "ios");
-    // if (!show) {
-    //   console.log("false show");
-    // }
     setEndTime(currentTime);
   };
 
@@ -87,10 +70,6 @@ function AddTask({ uid }) {
     // setMode(currentMode);
   };
   const showDatePicker = () => {
-    // setShow(true);
-    // console.log("date pressed");
-    // setMode("date");
-    // showMode("date");
     setShow(true);
     setShowDate(true);
     setShowStartTime(false);
@@ -197,7 +176,6 @@ function AddTask({ uid }) {
         <Icon />
         <Text style={styles.title}>Time</Text>
       </View>
-      {/* <Text>{date.toDateString()}</Text> */}
       <View style={{ flexDirection: "column", marginTop: 5, marginLeft: 5 }}>
         <View>
           <Text style={{ fontSize: 15, marginLeft: 12 }}>From:</Text>
