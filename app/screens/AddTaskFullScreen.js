@@ -17,12 +17,15 @@ import CalendarScreen from "../../app/screens/CalendarScreen";
 const Stack = createStackNavigator();
 
 function AddTaskFullScreen(props) {
+  const [uid, setUid] = useState(props.route.params.uid);
+  console.log("ADDTASKFULLSCREEN", props.route.params.uid, uid);
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
         <Stack.Screen
           name="Add"
           component={AddTask}
+          initialParams={{ uid: uid }}
           options={{
             title: "To Do",
             headerStyle: {

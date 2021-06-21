@@ -32,7 +32,9 @@ function Icon() {
   );
 }
 
-function AddTask({ uid }) {
+function AddTask(props) {
+  // console.log("ADDTASK", props);
+  const [uid, setUid] = useState(props.route.params.uid);
   const [task, setTask] = useState("No Task");
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());

@@ -33,6 +33,7 @@ const MyTabs = ({ uid }) => {
           height: 70,
         },
       }}
+      lazy={true}
     >
       <Tab.Screen
         name="Calendar"

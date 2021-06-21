@@ -13,12 +13,9 @@ function DisplayChart(props) {
   const [todayProgress, setTodayProgress] = useState(0);
   const [doneToday, setDoneToday] = useState(0);
   const [total, setTotal] = useState(0);
-  // console.log("DisplayChart", props.route.params);
+  const [weeklyProgress, setWeeklyProgress] = useState([]);
 
   useEffect(() => {
-    // setTodayProgress(0);
-    // setDoneToday(0);
-    // setTotal(0);
     getTodayProgress();
     getWeeklyProgress();
   }, []);
@@ -26,11 +23,14 @@ function DisplayChart(props) {
   const getTodayProgress = async () => {
     var localTotal = 0;
     var localDoneToday = 0;
+    var localTodayProgress = 0;
     var date = new Date();
     date.setHours(0, 0, 0, 0);
     var nextDate = new Date();
     nextDate.setDate(nextDate.getDate() + 1);
     nextDate.setHours(0, 0, 0, 0);
+    // console.log("---------------------");
+    // console.log(localTotal, localDoneToday, localTodayProgress, date, nextDate);
     await firebase
       .firestore()
       .collection("todo")
@@ -44,25 +44,20 @@ function DisplayChart(props) {
           setTodayProgress(0);
         } else {
           doc.forEach((doc) => {
-            console.log("Data:", doc.data());
-            // console.log("DIFFICULTY", doc.data().difficulty);
-            // console.log("Total: ", total);
+            // console.log("Data:", doc.data());
             localTotal += doc.data().difficulty;
-            console.log("update total-", total);
+            // console.log("update total-", localTotal);
             if (doc.data().completion) {
               localDoneToday += doc.data().difficulty;
-              // setDoneToday(doneToday + doc.data().difficulty);
-              console.log("update donetoday", doneToday);
+              // console.log("update donetoday", localDoneToday);
             }
           });
           if (total != 0) {
             localTodayProgress = localDoneToday / localTotal;
-            // setTodayProgress(doneToday / total);
           } else {
             localTodayProgress = 0;
-            // setTodayProgress(0);
           }
-          console.log(doneToday / total);
+
           setTotal(localTotal);
           setDoneToday(localDoneToday);
           setTodayProgress(localTodayProgress);
@@ -73,33 +68,41 @@ function DisplayChart(props) {
       });
   };
 
-  const getWeeklyProgress = () => {
+  const getWeeklyProgress = async () => {
+    var localWeeklyProgress = [];
     var week = new Date();
-
-    week.setDate(week.getDate() - 7);
     week.setHours(0, 0, 0, 0);
+    week.setDate(week.getDate() - 7);
+    // week.setHours(0, 0, 0, 0);
+    console.log(week.toLocaleDateString());
     console.log("a week before", week);
-    console.log("uid", uid);
-    console.log("week-timestamp", week.getTime());
-    console.log(Date.parse(week.toDateString));
-    firebase
+    await firebase
       .firestore()
       .collection("progress")
       .where("uid", "==", uid)
-      .where("date.timestamp", ">", week.getTime())
-      // .where("date.timestmap", "<=", new Date())
+      .where("date", ">=", week)
+      // .where("date", "<=", new Date())
       // .where("date", "<", new Date())
-      .orderBy("date.timestamp")
-      .limit(7)
+      .orderBy("date")
+      // .limit(7)
       .get()
       .then(function (doc) {
         if (doc.empty) {
           console.log("getWeeklyProgress - no matching data");
+          setWeeklyProgress([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         } else {
+          console.log("Weekly Progress");
           doc.forEach((doc) => {
-            console.log(doc.data().date);
+            console.log(new Date(doc.data().date.seconds * 1000));
+            localWeeklyProgress.push(
+              new Date(doc.data().date.seconds * 1000).getDay()
+            );
+            localWeeklyProgress.push(doc.data().progress);
+            // console.log(doc.data().progress);
           });
         }
+        // console.log(localWeeklyProgress);
+        setWeeklyProgress(localWeeklyProgress);
       });
   };
   return (
@@ -137,7 +140,9 @@ function DisplayChart(props) {
       >
         <View style={styles.circularHeader}>
           <Feather name="bar-chart-2" size={20} style={{ marginLeft: 10 }} />
-          <Text style={styles.circularHeaderText}>Weekly Progress</Text>
+          <Text style={styles.circularHeaderText} onPress={getWeeklyProgress}>
+            Weekly Progress
+          </Text>
         </View>
         <View style={styles.barProgress}>
           <View
@@ -145,10 +150,14 @@ function DisplayChart(props) {
               justifyContent: "flex-start",
               alignSelf: "center",
               // borderWidth: 3,
-              // borderColor: "orange",
+              // borderColor: "red",
             }}
+            // onPress={getWeeklyProgress}
           >
-            <BarProgress style={{ width: "95%" }} />
+            <BarProgress
+              style={{ width: "95%", borderWidth: 3, borderColor: "blue" }}
+              weeklyProgress={weeklyProgress}
+            />
           </View>
         </View>
       </View>

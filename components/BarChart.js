@@ -9,35 +9,27 @@ import {
   VictoryAxis,
 } from "victory-native";
 
-function BarProgress({
-  mon = 30,
-  tue = 50,
-  wed = 80,
-  thu = 50,
-  fri = 50,
-  sat = 80,
-  sun = 100,
-}) {
+function BarProgress({ weeklyProgress }) {
   // console.log("monday:", monday);
   const fill = "rgb(134,65,244)";
   const data = {
     progress: [
-      { x: "MON", y: mon },
-      { x: "TUE", y: tue },
-      { x: "WED", y: wed },
-      { x: "THU", y: thu },
-      { x: "FRI", y: fri },
-      { x: "SAT", y: sat },
-      { x: "SUN", y: sun },
+      { x: "Day 1", y: weeklyProgress[1] },
+      { x: "Day 2", y: weeklyProgress[3] },
+      { x: "Day 3", y: weeklyProgress[5] },
+      { x: "Day 4", y: weeklyProgress[7] },
+      { x: "Day 5", y: weeklyProgress[9] },
+      { x: "Day 6", y: weeklyProgress[11] },
+      { x: "Today", y: weeklyProgress[13] },
     ],
-    help: [null, null, null, null, null, null, null],
   };
+  const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   return (
     <View style={styles.container}>
       <VictoryChart
         width={400}
-        height={270}
-        domain={{ y: [0, 100] }}
+        height={350}
+        domain={{ y: [0, Math.max(...weeklyProgress) + 2] }}
         domainPadding={20}
       >
         <VictoryBar
@@ -45,7 +37,7 @@ function BarProgress({
           cornerRadius={5}
           barWidth={15}
           style={{ data: { fill: "orange" } }}
-          labels={({ datum }) => `${datum.y}%`}
+          labels={({ datum }) => `${datum.y}`}
         />
       </VictoryChart>
     </View>

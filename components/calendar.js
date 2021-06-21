@@ -32,18 +32,20 @@ function CalendarComponent({ uid }) {
     // console.log("----", nextDate);
     // console.log(new Date());
     // console.log(date);
-    console.log("------------");
-    console.log(new Date(date.dateString).toLocaleString());
-    console.log(new Date(date.dateString).toString());
+    // console.log("------------");
+    // console.log(new Date(date.dateString).toLocaleString());
+    // console.log(new Date(date.dateString).toString());
     var selectedDate = new Date(date.dateString);
     selectedDate.setHours(0, 0, 0, 0);
-    console.log(selectedDate);
+    // console.log(selectedDate);
+    nextDate.setHours(0, 0, 0, 0);
+    // console.log(nextDate);
     await firebase
       .firestore()
       .collection("todo")
       .where("uid", "==", uid)
       .where("date", ">=", selectedDate)
-      // .where("date", "<", nextDate)
+      .where("date", "<", nextDate)
       .get()
       .then(function (doc) {
         if (doc.empty) {
@@ -53,7 +55,7 @@ function CalendarComponent({ uid }) {
           var key = 0;
           var time;
           doc.forEach((doc) => {
-            console.log("DATA", doc.data());
+            // console.log("DATA", doc.data());
             if (doc.data().noTime) {
               time = "Full day";
             } else {
@@ -106,8 +108,8 @@ function CalendarComponent({ uid }) {
           current={new Date()}
           // Handler which gets executed on day press. Default = undefined
           onDayPress={(day) => {
-            console.log("-----CALENDARLIST(onDayPress)-----");
-            console.log("selected day", day.dateString);
+            // console.log("-----CALENDARLIST(onDayPress)-----");
+            // console.log("selected day", day.dateString);
             setDate(day);
 
             // console.log("date:", date);
