@@ -13,7 +13,7 @@ function DisplayChart(props) {
   const [todayProgress, setTodayProgress] = useState(0);
   const [doneToday, setDoneToday] = useState(0);
   const [total, setTotal] = useState(0);
-  const [weeklyProgress, setWeeklyProgress] = useState([]);
+  const [weeklyProgress, setWeeklyProgress] = useState([0, 0, 0, 0, 0, 0, 0]);
 
   useEffect(() => {
     getTodayProgress();
@@ -72,7 +72,7 @@ function DisplayChart(props) {
     var localWeeklyProgress = [];
     var week = new Date();
     week.setHours(0, 0, 0, 0);
-    week.setDate(week.getDate() - 7);
+    week.setDate(week.getDate() - 6);
     // week.setHours(0, 0, 0, 0);
     console.log(week.toLocaleDateString());
     console.log("a week before", week);
@@ -94,14 +94,19 @@ function DisplayChart(props) {
           console.log("Weekly Progress");
           doc.forEach((doc) => {
             console.log(new Date(doc.data().date.seconds * 1000));
-            localWeeklyProgress.push(
-              new Date(doc.data().date.seconds * 1000).getDay()
-            );
+            // localWeeklyProgress.push(
+            //   new Date(doc.data().date.seconds * 1000).getDay()
+            // );
             localWeeklyProgress.push(doc.data().progress);
-            // console.log(doc.data().progress);
+            console.log(doc.data().progress);
           });
+          if (localWeeklyProgress.length != 7) {
+            for (i = 7 - localWeeklyProgress.length; i >= 0; i--) {
+              localWeeklyProgress.push(0);
+            }
+          }
         }
-        // console.log(localWeeklyProgress);
+        console.log("LocalWeeklyProgress", localWeeklyProgress);
         setWeeklyProgress(localWeeklyProgress);
       });
   };
@@ -155,7 +160,7 @@ function DisplayChart(props) {
             // onPress={getWeeklyProgress}
           >
             <BarProgress
-              style={{ width: "95%", borderWidth: 3, borderColor: "blue" }}
+              style={{ width: "95%" }}
               weeklyProgress={weeklyProgress}
             />
           </View>

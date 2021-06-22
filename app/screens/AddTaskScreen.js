@@ -7,7 +7,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 function AddTaskScreen(props) {
-  const [uid, setUid] = useState(props.route.params.uid);
+  console.log("ADDTASKSCREEN", props.route.params.uid);
+  const [uid, setUid] = useState(null);
+
+  setUid(props.route.parms.uid);
   return (
     // <NavigationContainer independent={true}>
     //   <Stack.Navigator>

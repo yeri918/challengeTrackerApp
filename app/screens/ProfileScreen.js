@@ -6,13 +6,10 @@ import ProfileDesign from "../../components/ProfileDesign";
 import firebase from "firebase";
 
 function setProfile(props) {
-  // console.log("setProfile:", props);
-  // console.log("setProfile-route", route);
   return <ProfileDesign uid={props.route.params.userid} />;
 }
 
 const Stack = createStackNavigator();
-// const ProfileStack = createStackNavigator();
 
 function ProfileScreen(props) {
   const [uid, setUid] = useState(props.route.params.userID);

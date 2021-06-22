@@ -16,7 +16,7 @@ const Stack = createStackNavigator();
 
 function CalendarScreen(props) {
   const [uid, setUid] = useState(props.route.params.uid);
-  // console.log("Calendar screen", props.route.params.uid);
+  console.log("Calendar screen", props.route.params.uid);
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>

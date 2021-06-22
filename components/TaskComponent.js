@@ -72,12 +72,14 @@ const TaskScreen = ({ date, uid, userData }) => {
         if (doc.empty && progressValue > 0) {
           console.log("no matching data");
           console.log(uid, date.dateString, progressValue);
+          var dateUpdate = new Date(date.dateString);
+          // dateUpdate.setHours(0, 0, 0, 0);
           firebase
             .firestore()
             .collection("progress")
             .add({
               uid: uid,
-              date: new Date(date.dateString),
+              date: dateUpdate,
               progress: progressValue,
             })
             .then(console.log("post successful"))

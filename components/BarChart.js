@@ -9,18 +9,18 @@ import {
   VictoryAxis,
 } from "victory-native";
 
-function BarProgress({ weeklyProgress }) {
+function BarProgress({ weeklyProgress = [0, 0, 0, 0, 0, 0, 0] }) {
   // console.log("monday:", monday);
   const fill = "rgb(134,65,244)";
   const data = {
     progress: [
-      { x: "Day 1", y: weeklyProgress[1] },
-      { x: "Day 2", y: weeklyProgress[3] },
-      { x: "Day 3", y: weeklyProgress[5] },
-      { x: "Day 4", y: weeklyProgress[7] },
-      { x: "Day 5", y: weeklyProgress[9] },
-      { x: "Day 6", y: weeklyProgress[11] },
-      { x: "Today", y: weeklyProgress[13] },
+      { x: "Day 1", y: weeklyProgress[0] },
+      { x: "Day 2", y: weeklyProgress[1] },
+      { x: "Day 3", y: weeklyProgress[2] },
+      { x: "Day 4", y: weeklyProgress[3] },
+      { x: "Day 5", y: weeklyProgress[4] },
+      { x: "Day 6", y: weeklyProgress[5] },
+      { x: "Today", y: weeklyProgress[6] },
     ],
   };
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];

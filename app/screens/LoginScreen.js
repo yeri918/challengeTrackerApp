@@ -56,6 +56,9 @@ class LoginScreen extends Component {
                     first_name: result.additionalUserInfo.profile.given_name,
                     last_name: result.additionalUserInfo.profile.family_name,
                     created_at: Date.now(),
+                    username:
+                      result.additionalUserInfo.profile.given_name +
+                      result.additionalUserInfo.profile.family_name,
                   });
               } else {
                 // console.log("user uid", result.user.uid);

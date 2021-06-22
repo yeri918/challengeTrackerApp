@@ -25,16 +25,32 @@ function CalendarComponent({ uid }) {
 
   useEffect(() => {
     getData(date, nextDate);
+    createProgress();
   }, []);
 
+  const createProgress = async () => {
+    await firebase
+      .firestore()
+      .collection("progress")
+      .where("uid", "==", uid)
+      .where("date", "==", new Date(date.dateString))
+      .get()
+      .then(function (doc) {
+        if (doc.empty) {
+          firebase
+            .firestore()
+            .collection("progress")
+            .add({
+              uid: uid,
+              date: new Date(date.dateString),
+              progress: 0,
+            });
+        } else {
+          console.log("createProgress-already exists");
+        }
+      });
+  };
   const getData = async (date, nextDate) => {
-    // console.log("----", new Date(date.dateString));
-    // console.log("----", nextDate);
-    // console.log(new Date());
-    // console.log(date);
-    // console.log("------------");
-    // console.log(new Date(date.dateString).toLocaleString());
-    // console.log(new Date(date.dateString).toString());
     var selectedDate = new Date(date.dateString);
     selectedDate.setHours(0, 0, 0, 0);
     // console.log(selectedDate);
