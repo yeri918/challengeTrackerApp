@@ -9,7 +9,8 @@ import NewChallengeGroup from "../../app/screens/NewChallengeGroup";
 
 const Stack = createStackNavigator();
 
-function FriendsTopList() {
+function FriendsTopList(props) {
+  console.log("FriendsTopList", props.route.params.uid);
   return (
     <View style={{ flex: 1, backgroundColor: "#FFB554" }}>
       {/* <Text style={{ color: "red" }}>Hi</Text>
@@ -23,7 +24,7 @@ function FriendsTopList() {
           borderRadius: 5,
         }}
       >
-        <FriendsRanking />
+        <FriendsRanking uid={props.route.params.uid} />
       </View>
       <View style={{ flex: 1 }}>
         <ChallengeGroup />
@@ -32,13 +33,15 @@ function FriendsTopList() {
   );
 }
 
-function FriendsScreen() {
+function FriendsScreen(props) {
+  console.log("FriendsScreen", props.route.params.uid);
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
         <Stack.Screen
           name="Ranking"
           component={FriendsTopList}
+          initialParams={{ uid: props.route.params.uid }}
           options={{
             title: "Ranking",
             headerStyle: {

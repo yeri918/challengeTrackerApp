@@ -29,22 +29,22 @@ function CalendarComponent({ uid }) {
   }, []);
 
   const createProgress = async () => {
+    var today = new Date(date.dateString);
+    today.setHours(9, 0, 0, 0);
+    console.log("Today", today);
     await firebase
       .firestore()
       .collection("progress")
       .where("uid", "==", uid)
-      .where("date", "==", new Date(date.dateString))
+      .where("date", "==", today)
       .get()
       .then(function (doc) {
         if (doc.empty) {
-          firebase
-            .firestore()
-            .collection("progress")
-            .add({
-              uid: uid,
-              date: new Date(date.dateString),
-              progress: 0,
-            });
+          firebase.firestore().collection("progress").add({
+            uid: uid,
+            date: today,
+            progress: 0,
+          });
         } else {
           console.log("createProgress-already exists");
         }
@@ -53,9 +53,9 @@ function CalendarComponent({ uid }) {
   const getData = async (date, nextDate) => {
     var selectedDate = new Date(date.dateString);
     selectedDate.setHours(0, 0, 0, 0);
-    // console.log(selectedDate);
+    console.log(selectedDate);
     nextDate.setHours(0, 0, 0, 0);
-    // console.log(nextDate);
+    console.log(nextDate);
     await firebase
       .firestore()
       .collection("todo")

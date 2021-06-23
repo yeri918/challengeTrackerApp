@@ -8,19 +8,14 @@ import {
   Modal,
   TextInput,
 } from "react-native";
-import { Avatar, Title, Caption } from "react-native-paper";
-
-import { color } from "react-native-reanimated";
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
-import OneFriendRow from "../components/oneFriendRow";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import OneFriend from "../components/OneFriend";
-
+import firebase from "firebase";
 const { width, height } = Dimensions.get("window");
-function FriendsRanking() {
+function FriendsRanking({ uid }) {
+  console.log("FriendsRanking", uid);
+
   const [group, setGroup] = useState([
     { id: "1", name: "Julie Park", point: 57 },
     { id: "2", name: "Annie Park", point: 51 },
@@ -29,10 +24,32 @@ function FriendsRanking() {
     { id: "5", name: "Grace Jung", point: 10 },
   ]);
   const [modal, setModal] = useState(false);
-  const [userToAdd, setUserToAdd] = useState({
-    username: "juliepark",
-    name: "Julie Park",
-  });
+  const [username, setUsername] = useState("");
+  const [friendsList, setFriendsList] = useState([]);
+
+  const getFriend = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .where("username", "==", username)
+      .get()
+      .then(function (doc) {
+        if (doc.empty) {
+          console.log("GetFriend - no matching user");
+        } else {
+          var localFriendsList = [];
+          doc.forEach((doc) => {
+            console.log(doc.id);
+            localFriendsList.push(doc.id);
+            console.log(localFriendsList);
+          });
+        }
+        setFriendsList(localFriendsList);
+      })
+      .catch(function (error) {
+        console.log("getFriend - error", error);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.friendListTitle}>
@@ -102,17 +119,21 @@ function FriendsRanking() {
                     <TextInput
                       style={{
                         marginTop: 5,
-                        height: 30,
+                        // height: 30,
                         borderColor: "black",
                         borderWidth: 1,
-                        fontSize: 15,
+                        fontSize: 18,
                         margin: 5,
                         width: "80%",
-                        borderRadius: 10,
+                        borderRadius: 8,
                         // alignSelf: "center",
+                        padding: 8,
                       }}
-                      placeholder=" username"
+                      placeholder="username"
+                      value={username}
+                      onChangeText={setUsername}
                     />
+
                     <View
                       style={{
                         // borderWidth: 2,
@@ -127,18 +148,12 @@ function FriendsRanking() {
                         size={20}
                         style={{
                           alignSelf: "center",
-                          // justifyContent: "flex-end",
-                          // borderWidth: 2,
-                          // borderColor: "blue",
                         }}
-                        onPress={console.log("search button pressed")}
+                        onPress={getFriend}
                       />
                     </View>
                   </View>
-                  {/* <Text>
-                    {userToAdd.name}
-                    {userToAdd.username}
-                  </Text> */}
+                  <Text>{username}</Text>
                   <TouchableOpacity
                     style={{
                       backgroundColor: "orange",
