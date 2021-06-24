@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,27 +7,114 @@ import {
   FlatList,
   Modal,
   TextInput,
+  Image,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  FontAwesome,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import OneFriend from "../components/OneFriend";
 import firebase from "firebase";
+import { Avatar } from "react-native-paper";
 const { width, height } = Dimensions.get("window");
 function FriendsRanking({ uid }) {
   console.log("FriendsRanking", uid);
 
   const [group, setGroup] = useState([
-    { id: "1", name: "Julie Park", point: 57 },
-    { id: "2", name: "Annie Park", point: 51 },
-    { id: "3", name: "Gabby Kwon", point: 48 },
-    { id: "4", name: "Michelle Byun", point: 35 },
-    { id: "5", name: "Grace Jung", point: 10 },
+    { id: "1", name: "Julie Park", point: 12 },
+    { id: "2", name: "Tania Kim", point: 11 },
+    { id: "3", name: "Gabby Kwon", point: 9 },
+    { id: "4", name: "Michelle Byun", point: 9 },
+    { id: "5", name: "Grace Jung", point: 5 },
   ]);
+  const [friends, setFriends] = useState();
   const [modal, setModal] = useState(false);
   const [username, setUsername] = useState("");
   const [friendsList, setFriendsList] = useState([]);
+  const [friendId, setFriendId] = useState();
+  const [friendCheck, setFriendCheck] = useState(false);
 
-  const getFriend = async () => {
+  useEffect(() => {
+    getFriendsList();
+  }, []);
+
+  const getName = async (id) => {
+    var name, firstName, lastName;
+    console.log("id:", id);
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(id)
+      .get()
+      .then(function (userDoc) {
+        console.log("check 2");
+        if (userDoc.empty) {
+          console.log("cannot find the name");
+        } else {
+          // userDoc.forEach((userDoc)=> {
+          console.log("userData", userDoc.data());
+          firstName = userDoc.data().first_name;
+          lastName = userDoc.data().last_name;
+        }
+        name = firstName + " " + lastName;
+        console.log("name:", name);
+      });
+    return name;
+  };
+  const getFriendsList = async () => {
+    var friendRankingInfo = {};
+    var localFriends = [];
+    await firebase
+      .firestore()
+      .collection("friends")
+      .where("user", "==", uid)
+      .get()
+      .then(function (doc) {
+        if (doc.empty) {
+          console.log("no friends");
+        } else {
+          doc.forEach((doc) => {
+            var progress = 0;
+            console.log(doc.data().friends);
+            var userName;
+            for (const i in doc.data().friends) {
+              console.log(doc.data().friends[i]);
+              firebase
+                .firestore()
+                .collection("progress")
+                .where("uid", "==", doc.data().friends[i])
+                .get()
+                .then(function (d) {
+                  console.log("check 1");
+                  userName = getName(doc.data().friends[i]);
+                  console.log("1-userName:", userName);
+                  if (d.empty) {
+                    console.log("friends - doc is empty");
+                  } else {
+                    progress = d.data().progress;
+                  }
+                });
+              console.log("check 3");
+              friendRankingInfo = {
+                id: doc.data().friends[i],
+                name: userName,
+                progress: progress,
+              };
+              localFriends.push(friendRankingInfo);
+              console.log("friendRankingInfo", friendRankingInfo);
+            }
+            setFriends(localFriends);
+          });
+        }
+      });
+  };
+
+  const friendsCheck = async () => {
+    console.log("friendsCheck ", friendId);
+    var localFriendId;
     await firebase
       .firestore()
       .collection("users")
@@ -38,9 +125,22 @@ function FriendsRanking({ uid }) {
           console.log("GetFriend - no matching user");
         } else {
           var localFriendsList = [];
+          var friendData;
+          var id_n = 0;
           doc.forEach((doc) => {
             console.log(doc.id);
-            localFriendsList.push(doc.id);
+            setFriendId(doc.id);
+            localFriendId = doc.id;
+            friendData = {
+              id: doc.id,
+              firstName: doc.data().first_name,
+              lastName: doc.data().last_name,
+              profilePicture: doc.data().profile_picture,
+            };
+            localFriendsList.push(friendData);
+            id_n++;
+            // localFriendsList.push(doc.id);
+
             console.log(localFriendsList);
           });
         }
@@ -49,6 +149,93 @@ function FriendsRanking({ uid }) {
       .catch(function (error) {
         console.log("getFriend - error", error);
       });
+    await firebase
+      .firestore()
+      .collection("friends")
+      .where("user", "==", uid)
+      .where("friends", "array-contains", localFriendId)
+      .get()
+      .then(function (doc) {
+        if (doc.empty) {
+          console.log("friendsCheck - not a friend yet");
+          setFriendCheck(false);
+        } else {
+          console.log("friendsCheck - data");
+          doc.forEach((doc) => {
+            console.log(doc.data());
+          });
+          setFriendCheck(true);
+        }
+      })
+      .catch(function (error) {
+        console.log("friendsCheck - error", error);
+      });
+  };
+  const addUser = async (friendId) => {
+    console.log("addUser", friendId);
+    setFriendCheck(true);
+    await firebase
+      .firestore()
+      .collection("friends")
+      .add({
+        user: uid,
+        friends: [friendId],
+      })
+      .then(() => {
+        console.log("now friends  ");
+      })
+      .catch(function (error) {
+        console.log("addUser - error", error);
+      });
+  };
+  const renderItem = ({ item }) => {
+    return (
+      <View
+        style={{
+          borderColor: "orange",
+          borderWidth: 3,
+          backgroundColor: "white",
+          margin: 10,
+          flexDirection: "row",
+          marginTop: 10,
+          borderRadius: 15,
+        }}
+      >
+        <Avatar.Image
+          size={50}
+          style={{ margin: 10, marginLeft: 10 }}
+          source={{ uri: item.profilePicture }}
+        />
+        <Text
+          style={{
+            margin: 5,
+            fontSize: 20,
+            justifyContent: "center",
+            alignSelf: "center",
+            color: "black",
+          }}
+        >
+          {item.firstName} {item.lastName}
+        </Text>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "flex-end",
+            justifyContent: "center",
+            marginRight: 20,
+          }}
+        >
+          {!friendCheck && (
+            <AntDesign
+              name="adduser"
+              size={20}
+              onPress={() => addUser(item.id)}
+            />
+          )}
+          {friendCheck && <MaterialIcons name="check" size={30} />}
+        </View>
+      </View>
+    );
   };
   return (
     <View style={styles.container}>
@@ -149,11 +336,14 @@ function FriendsRanking({ uid }) {
                         style={{
                           alignSelf: "center",
                         }}
-                        onPress={getFriend}
+                        onPress={() => friendsCheck()}
                       />
                     </View>
                   </View>
-                  <Text>{username}</Text>
+                  {/* <Text>{username}</Text> */}
+                  <View style={{ height: "60%", width: "100%" }}>
+                    <FlatList data={friendsList} renderItem={renderItem} />
+                  </View>
                   <TouchableOpacity
                     style={{
                       backgroundColor: "orange",
@@ -185,11 +375,6 @@ function FriendsRanking({ uid }) {
           );
         }}
       />
-      {/* <OneFriendRow rank={1} name={"Annie Park"} percentage={90} />
-      <OneFriendRow rank={2} name={"Julie Park"} percentage={80} />
-      <OneFriendRow rank={3} name={"Daniel Kim"} percentage={60} />
-      <OneFriendRow rank={4} name={"Mary Lee   "} percentage={50} />
-      <OneFriendRow rank={5} name={"Tania Lim   "} percentage={30} /> */}
     </View>
 
     //   <View style={{ flex: 1, backgroundColor: "#999999" }} />

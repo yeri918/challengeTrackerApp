@@ -17,10 +17,10 @@ function ChallengeGroup() {
   const navigation = useNavigation();
   const [group, setGroup] = useState([
     { id: "1", groupName: "Power", point: 17, memberCount: 3 },
-    { id: "2", groupName: "Lesgo", point: 21, memberCount: 4 },
-    { id: "3", groupName: "GO", point: 18, memberCount: 4 },
-    { id: "4", groupName: "Motivate", point: 35, memberCount: 8 },
-    { id: "5", groupName: "Great", point: 35, memberCount: 6 },
+    { id: "2", groupName: "Lesgo", point: 7, memberCount: 2 },
+    { id: "3", groupName: "GO", point: 10, memberCount: 2 },
+    { id: "4", groupName: "Motivate", point: 24, memberCount: 3 },
+    { id: "5", groupName: "Great", point: 35, memberCount: 4 },
   ]);
 
   return (

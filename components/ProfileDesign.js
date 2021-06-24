@@ -184,11 +184,11 @@ function ProfileDesign({ uid }) {
       </View>
       <View style={styles.infoBoxWrapper}>
         <View style={styles.infoBox}>
-          <Title>5</Title>
+          <Title>3</Title>
           <Caption>Likes Today</Caption>
         </View>
         <View style={styles.infoBox}>
-          <Title>90 </Title>
+          <Title>22 </Title>
           <Caption>Likes This Month</Caption>
         </View>
       </View>
@@ -197,7 +197,8 @@ function ProfileDesign({ uid }) {
           flex: 1,
           // borderColor: "red",
           // borderWidth: 3,
-          justifyContent: "center",
+          justifyContent: "flex-end",
+          marginBottom: "20%",
         }}
       >
         <TouchableOpacity

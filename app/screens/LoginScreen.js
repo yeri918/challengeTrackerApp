@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import Expo from "expo";
 import * as Google from "expo-google-app-auth";
 import firebase from "firebase";
+import { TouchableOpacity } from "react-native-gesture-handler";
 // import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
 class LoginScreen extends Component {
@@ -116,12 +117,25 @@ class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>LoginScreen</Text>
-        <Button
-          title="Sign In With Google"
+        <Text style={{ fontSize: 30, padding: 10, color: "white" }}>
+          Welcome!
+        </Text>
+        <TouchableOpacity
           onPress={() => this.signInWithGoogleAsync()}
+          style={{
+            borderWidth: 3,
+            borderColor: "white",
+            padding: 10,
+            borderRadius: 10,
+            backgroundColor: "white",
+          }}
+
           // onPress={() => console.log("sign in pressed")}
-        />
+        >
+          <Text style={{ fontSize: 20, color: "gray" }}>
+            Sign In With Google
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -132,6 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "orange",
   },
 });
 
